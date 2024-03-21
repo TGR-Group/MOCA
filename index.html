@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Junzs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.5/dist/full.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/daisyui@2.51.5/dist/full.js"></script>
+  <style>
+        body {
+      background-color: #f7f7f7;
+      font-family: 'Poppins', sans-serif;
+    }
+
+
+    .card-group {
+      margin-left: auto;
+      margin-right: auto;
+      max-width: 1024px;
+      width: 90%;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-gap: 30px;
+    }
+
+    .card {
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card__imgframe img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .card__textbox {
+      width: 100%;
+      padding: 20px;
+      background: #fff;
+      box-sizing: border-box;
+    }
+
+    .card__titletext {
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 1.4;
+      color: #333;
+    }
+
+    .card__overviewtext {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #666;
+    }
+
+    .fesapp img {
+      max-width: 100%;
+      height: auto;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .fesapp img:hover {
+      transform: scale(1.02);
+    }
+
+    footer {
+      background-color: #fff;
+      color: #333;
+      padding: 20px;
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+
+
+      .nav {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+
+    #group-photo {
+      border-radius: 8px; /* 画像の角を丸く */
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* 画像に影をつける */
+    }
+
+
+    #group-photo {
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    @media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem;
+  }
+
+  .header img {
+    margin-bottom: 1rem;
+  }
+
+  .nav {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .nav a {
+    margin-bottom: 0.5rem;
+    width: 100%;
+    text-align: left;
+  }
+
+  .card-group {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+
+  .fesapp img {
+    max-width: 80%;
+  }
+}
+  </style>
+    <div class="bg-white pb-6 sm:pb-8 lg:pb-12">
+      <div class="mx-auto max-w-screen-2xl px-4 md:px-8">
+        <header class="mb-8 flex items-center justify-between py-4 md:mb-12 md:py-8 xl:mb-16">
+          <a href="https://junzs.net" class="inline-flex items-center gap-2.5 text-2xl font-bold text-black md:text-3xl" aria-label="logo">
+              <img src="logotext.jpg" class="h-auto w-40 text-indigo-500">      
+          </a>
+          <nav class="hidden gap-12 lg:flex">
+            <a href="#about" class="text-lg font-semibold text-gray-600 transition duration-100 hover:text-indigo-500 active:text-indigo-700">About</a>
+            <a href="/" class="text-lg font-semibold text-gray-600 transition duration-100 hover:text-indigo-500 active:text-indigo-700">Skill</a>
+            <a href="schoolfes-web-app.php" class="text-lg font-semibold text-gray-600 transition duration-100 hover:text-indigo-500 active:text-indigo-700">Blongs</a>
+          </nav>
+    
+        </header>
+    <main>
+      <section class="text-center py-12" id="about">
+        <h1 class="text-4xl font-bold mb-4">What is junzs</h1>
+        <img src="junzs.webp" id="group-photo" alt="Group photo" class="mx-auto mb-12">
+        <p class="mb-12 text-gray-600">Junzsとは上田染谷丘高校の探究活動の中で生まれたグループです<br>文化祭の待ち時間をわかるようになったらいいなぁという思いから活動を始めました<br>現在文化祭専用の待ち時間表示、予約サイトを作るプロジェクトが進行中です</p>
+      </section>
+
+      <section class="py-12">
+        <h2 class="text-3xl font-bold text-center mb-8">Member</h2>
+        <div class="card-group">
+          <a href="https://junzs.net/kuraryu" target="_blank" class="card">
+            <div class="card__imgframe">
+              <img src="kuraryu.jpg" alt="Member Image">
+            </div>
+            <div class="card__textbox">
+              <div class="card__titletext">くらりゅ</div>
+              <div class="card__overviewtext">
+                長野県に住むしがない高校生<br>趣味はカメラや吹奏楽（担当楽器：ユーフォニアム）など何系統の人間なのかわからない<br>最近は旅行に行きたいなと考えている。
+              </div>
+            </div>
+          </a>
+
+          <div class="card">
+            <div class="card__imgframe">
+              <img src="ooyama.jpg" alt="Member Image">
+            </div>
+            <div class="card__textbox">
+              <div class="card__titletext">おおやまくん</div>
+              <div class="card__overviewtext">
+                身長が190センチ台という超大型の人間。<br>たぶん実生活で支障があるんじゃないかとつつみんはおもっている。<br>バドミントン班に所属。
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card__imgframe">
+              <img src="ishi.jpg" alt="Member Image">
+            </div>
+            <div class="card__textbox">
+              <div class="card__titletext">石井ちゃん</div>
+              <div class="card__overviewtext">
+                なんか小さくてかわいいの。<br>バドミントン班に所属。
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card__imgframe">
+              <img src="sano.jpg" alt="Member Image">
+            </div>
+            <div class="card__textbox">
+              <div class="card__titletext">さのくん</div>
+              <div class="card__overviewtext">
+                なんか大きくてかわいいの。<br>バドミントン班に所属。
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="py-12">
+        <h2 class="text-3xl font-bold text-center mb-8">Project</h2>
+        <div class="text-center mb-12">
+          <h3 class="font-bold mb-2 text-xl">Schoolfes web app</h3>
+          <a href="#" class="fesapp flex justify-center items-center">
+            <img src="fes.png" alt="Schoolfes Web App">
+          </a>
+          <p class="mt-4 text-gray-600">文化祭の待ち時間の表示や予約機能などをつけることができるウェブアプリです<br>Scholfes web app を導入することで文化祭のUX改善に役立ちます！<br>くわしくはこちらを参照してください！</p>
+        </div>
+      </section>
+
+      <section class="py-12">
+        <h2 class="text-3xl font-bold text-center mb-8">news</h2>
+        <p class="text-center text-gray-600">現在のニュースはありません<br>ニュースが入り次第更新します</p>
+      </section>
+    </main>
+
+    <footer>
+      <p>© 2024 Junzs. All Rights Reserved.</p>
+    </footer>
+  </div>
+</body>
+</html>
