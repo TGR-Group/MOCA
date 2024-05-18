@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>店舗情報入力</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="staffpage.js"></script>
+</head>
+<body>
+    <header>
+        <h1>在庫情報入力ページ</h1>
+        <nav>
+            <ul>
+                <li><a href=".html">ホーム</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section>
+            <h2>店舗情報を入力</h2>
+            <div class="form-container">
+                <div class="input-group">
+                    <label for="nameInput">クラス名</label>
+                    <input type="text" id="nameInput" placeholder="クラス名を入力">
+                </div>      
+                <button onclick="writeToSpreadsheet()">送信</button>
+            </div>
+        </section>
+    </main>    
+
+    <footer>
+        <p>&copy; 2024 supported by TGRGroup </p>
+    </footer>
+</body>
+</html>
