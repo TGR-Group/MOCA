@@ -4,15 +4,18 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///classes.db'
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://username:password@localhost/classes_db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # SQLAlchemyの警告を抑制
+
 db = SQLAlchemy(app)
 
 class Class(db.Model):
     __tablename__ = 'classes'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
-    store_name = db.Column(db.String(50), nullable=False)  # 店名
-    stock_status = db.Column(db.String(10), nullable=False)  # 在庫状況
+    store_name = db.Column(db.String(50), nullable=False)
+    stock_status = db.Column(db.String(10), nullable=False)
 
 @app.route('/add_class', methods=['POST'])
 def add_class():
