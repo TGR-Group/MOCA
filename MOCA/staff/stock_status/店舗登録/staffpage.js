@@ -1,8 +1,8 @@
 async function writeToSpreadsheet() {
-  const name = document.getElementById('classnameInput').value;
+  const name = document.getElementById('storenameInput').value;
   const storeName = document.getElementById('storenameInput').value;
 
-  const response = await fetch('http://localhost:5000/add_class', {  // URLが正しいことを確認
+  const response = await fetch('http://localhost:5000/add_store', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -19,4 +19,3 @@ async function writeToSpreadsheet() {
   console.log(result.message);
   alert(result.message);
 }
-

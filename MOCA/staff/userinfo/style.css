@@ -44,6 +44,53 @@ main {
     margin-top: 20px;
 }
 
+/* テーブル */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+table th, table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+table th {
+    background-color: #494997;
+    color: #ffffff;
+}
+
+table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* グリッド */
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 2列のグリッド */
+    gap: 10px; /* グリッドアイテム間のスペース */
+    margin-top: 20px;
+}
+
+.grid-header {
+    font-weight: bold;
+    background-color: #494997;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.grid-item {
+    background-color: #ffffff;
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
 section {
     background-color: #ffffff;
     padding: 20px;
@@ -89,7 +136,7 @@ button {
     cursor: pointer;
     font-size: 16px;
     display: block; /* フル幅で */
-    width: 100%; 
+    width: 100%;
 }
 
 button:hover {
@@ -105,7 +152,7 @@ footer {
     color: white;
 }
 
-/* スポンジボブ？ */
+/* レスポンシブ対応 */
 @media (max-width: 768px) {
     nav ul li {
         display: block;
@@ -113,15 +160,14 @@ footer {
     }
 }
 
-
+/* チェックボックス */
 input[type="checkbox"] {
     width: 24px;  /* チェックボックスの横幅 */
     height: 24px; /* チェックボックスの縦幅 */
-    /*後々%に直したい*/
 }
 
 #checkbox_good + label,
 #checkbox_soso + label,
 #checkbox_bad + label {
-    font-size: 24px; 
+    font-size: 24px;
 }
