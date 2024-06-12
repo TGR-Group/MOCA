@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>待ち状況表示</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="viewOnlyScript.js"></script> <!-- 表示専用のスクリプトファイルを読み込む -->
+</head>
+<body>
+    <header>
+        <h1>待ち状況管理</h1>
+    </header>
+    <main>
+        <section>
+            <h2>待機中</h2>
+            <table id="waitingTable">
+                <thead>
+                    <tr>
+                        <th>ユーザー番号</th>
+                        <th>待機時間</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- 待機中のユーザー -->
+                </tbody>
+            </table>
+        </section>
+        <section>
+            <h2>呼び出し中</h2>
+            <table id="calledTable">
+                <thead>
+                    <tr>
+                        <th>ユーザー番号</th>
+                        <th>待機時間</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- 呼び出し中のユーザー -->
+                </tbody>
+            </table>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 待ち状況管理システム</p>
+    </footer>
+</body>
+</html>
