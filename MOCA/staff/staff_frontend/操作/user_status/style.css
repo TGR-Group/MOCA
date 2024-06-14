@@ -99,6 +99,18 @@ section {
     margin-bottom: 20px;
 }
 
+.action-cell {
+    display: flex;
+    justify-content: space-between;
+}
+
+.action-cell button {
+    flex: 1;
+    margin: 0 5px;
+    padding: 10px;
+}
+
+
 /* フォームコンテナ */
 .form-container {
     background-color: #f9f9f9;
