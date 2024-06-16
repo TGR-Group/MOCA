@@ -1,10 +1,10 @@
 document.addEventListener('DOMContentLoaded', async () => {
     const sampleQueues = [
-        { user_id: 10001, status: 'wait', wait_time: 300 },
-        { user_id: 10002, status: 'called', wait_time: 600 },
-        { user_id: 10003, status: 'wait', wait_time: 120 },
-        { user_id: 10004, status: 'called', wait_time: 1800 },
-        { user_id: 10005, status: 'in', wait_time: 2400 }
+        { user_id: 10001, status: 'wait', call_order: 1 },
+        { user_id: 10002, status: 'called', call_order: 2 },
+        { user_id: 10003, status: 'wait', call_order: 3 },
+        { user_id: 10004, status: 'called', call_order: 4 },
+        { user_id: 10005, status: 'in', call_order: 5 }
     ];
 
     const waitingTableBody = document.getElementById('waitingTable').getElementsByTagName('tbody')[0];
@@ -13,8 +13,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     sampleQueues.forEach(queue => {
         const row = document.createElement('tr');
-        row.insertCell(0).textContent = formatUserId(queue.user_id);
-        row.insertCell(1).textContent = formatWaitTime(queue.wait_time);
+        row.insertCell(0).textContent = queue.call_order;
+        row.insertCell(1).textContent = formatUserId(queue.user_id);
 
         if (queue.status === 'wait') {
             const actionCell = row.insertCell(2);
@@ -50,12 +50,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 function formatUserId(userId) {
     return userId.toString().padStart(5, '0');
-}
-
-function formatWaitTime(seconds) {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${minutes}分${remainingSeconds}秒`;
 }
 
 async function updateStatus(userId, newStatus) {
