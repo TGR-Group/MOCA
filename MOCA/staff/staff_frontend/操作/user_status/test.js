@@ -1,10 +1,10 @@
 document.addEventListener('DOMContentLoaded', async () => {
     const sampleQueues = [
         { user_id: 10001, status: 'wait', call_order: 1 },
-        { user_id: 10002, status: 'called', call_order: 2 },
-        { user_id: 10003, status: 'wait', call_order: 3 },
-        { user_id: 10004, status: 'called', call_order: 4 },
-        { user_id: 10005, status: 'in', call_order: 5 }
+        { user_id: 10002, status: 'called', call_order: 1 },
+        { user_id: 10003, status: 'wait', call_order: 2 },
+        { user_id: 10004, status: 'called', call_order: 2 },
+        { user_id: 10005, status: 'in', call_order: 1 }
     ];
 
     const waitingTableBody = document.getElementById('waitingTable').getElementsByTagName('tbody')[0];
@@ -46,6 +46,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             inTableBody.appendChild(row);
         }
     });
+
+    sortTable(waitingTableBody);
+    sortTable(calledTableBody);
+    sortTable(inTableBody);
 });
 
 function formatUserId(userId) {
@@ -72,4 +76,10 @@ async function updateStatus(userId, newStatus) {
     } catch (error) {
         alert(error.message);
     }
+}
+
+function sortTable(tbody) {
+    Array.from(tbody.getElementsByTagName('tr'))
+        .sort((a, b) => a.cells[0].textContent - b.cells[0].textContent)
+        .forEach(row => tbody.appendChild(row));
 }
