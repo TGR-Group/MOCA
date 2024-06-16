@@ -3,47 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>待ち状況表示</title>
+    <title>落とし物表示</title>
     <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script> <!-- 表示専用のスクリプトファイルを読み込む -->
+    <script src="display_script.js" defer></script>
 </head>
 <body>
     <header>
-        <h1>待ち状況管理</h1>
+        <h1>落とし物情報</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">ホーム</a></li>
+                <li><a href="register_lostproperty.html">落とし物登録</a></li>
+                <li><a href="update_lostproperty.html">落とし物ステータス変更</a></li>
+                <li><a href="lostproperty.html">落とし物表示</a></li>
+            </ul>
+        </nav>
     </header>
     <main>
         <section>
-            <h2>待機中</h2>
-            <table id="waitingTable">
+            <h2>落とし物一覧</h2>
+            <table id="lostPropertyTable">
                 <thead>
                     <tr>
-                        <th>待ち順</th>
-                        <th>ユーザー番号</th>
+                        <th>落とし物の名前</th>
+                        <th>受け取り状況</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- 待機中のユーザー -->
-                </tbody>
-            </table>
-        </section>
-        <section>
-            <h2>呼び出し中</h2>
-            <table id="calledTable">
-                <thead>
-                    <tr>
-                        <th>待ち順</th>
-                        <th>ユーザー番号</th>
-                      
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- 呼び出し中のユーザー -->
+                    <!-- JavaScriptで動的に追加 -->
                 </tbody>
             </table>
         </section>
     </main>
     <footer>
-        <p>&copy; 2024 待ち状況管理システム</p>
+        <p>&copy; 2024 supported by TGRGroup</p>
     </footer>
 </body>
 </html>
