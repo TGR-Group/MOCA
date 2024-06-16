@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', async () => {
+    // サンプルデータ
     const sampleQueues = [
         { user_id: 10001, status: 'wait', call_order: 1 },
         { user_id: 10002, status: 'called', call_order: 1 },
@@ -13,32 +14,35 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     sampleQueues.forEach(queue => {
         const row = document.createElement('tr');
-        row.insertCell(0).textContent = queue.call_order;
-        row.insertCell(1).textContent = formatUserId(queue.user_id);
+        if (queue.status === 'wait' || queue.status === 'called') {
+            row.insertCell(0).textContent = queue.call_order;
+            row.insertCell(1).textContent = formatUserId(queue.user_id);
+        } else {
+            row.insertCell(0).textContent = formatUserId(queue.user_id);
+        }
 
         if (queue.status === 'wait') {
             const actionCell = row.insertCell(2);
-            actionCell.classList.add('action-cell'); 
             const callButton = document.createElement('button');
-            callButton.textContent = '呼び出し済み';
+            callButton.textContent = '呼び出し済みに変更';
             callButton.onclick = () => updateStatus(queue.user_id, 'called');
             actionCell.appendChild(callButton);
 
             const inButton = document.createElement('button');
-            inButton.textContent = '入場';
+            inButton.textContent = '入場中に変更';
             inButton.onclick = () => updateStatus(queue.user_id, 'in');
             actionCell.appendChild(inButton);
-
+            
             waitingTableBody.appendChild(row);
         } else if (queue.status === 'called') {
             const actionCell = row.insertCell(2);
             const inButton = document.createElement('button');
-            inButton.textContent = '入場';
+            inButton.textContent = '入場中に変更';
             inButton.onclick = () => updateStatus(queue.user_id, 'in');
             actionCell.appendChild(inButton);
             calledTableBody.appendChild(row);
         } else if (queue.status === 'in') {
-            const actionCell = row.insertCell(2);
+            const actionCell = row.insertCell(1);
             const exitButton = document.createElement('button');
             exitButton.textContent = '退出';
             exitButton.onclick = () => updateStatus(queue.user_id, 'exited');
@@ -49,7 +53,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     sortTable(waitingTableBody);
     sortTable(calledTableBody);
-    sortTable(inTableBody);
 });
 
 function formatUserId(userId) {
