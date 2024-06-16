@@ -10,7 +10,6 @@ body {
     padding: 20px;
 }
 
-/* ヘッダン */
 header {
     background-color: #494997;
     color: #ffffff;
@@ -18,7 +17,6 @@ header {
     text-align: center;
 }
 
-/* ナビ */
 nav ul {
     list-style: none;
     padding: 0;
@@ -51,7 +49,6 @@ section {
     margin-bottom: 20px;
 }
 
-/* フォームコンテナ */
 .form-container {
     background-color: #f9f9f9;
     border: 1px solid #ddd;
@@ -77,7 +74,7 @@ section {
     border: 1px solid #ddd;
     border-radius: 5px;
 }
-ｂ
+
 button {
     background-color: #4CAF50;
     color: white;
@@ -86,15 +83,27 @@ button {
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
-    display: block; 
-    width: 100%; 
+    display: block;
+    width: 33.33%;
 }
 
 button:hover {
     background-color: #45a049;
 }
 
-/* フッター */
+input[type="checkbox"] {
+    width: 60px;
+    height: 60px;
+}
+
+input[type="radio"] + label {
+    font-size: 24px;
+}
+
+input[type="checkbox"] + label {
+    font-size: 24px;
+}
+
 footer {
     text-align: center;
     margin-top: 20px;
@@ -110,28 +119,15 @@ footer {
     }
 }
 
-/* チェックボック */
-input[type="checkbox"] {
-    width: 40px;  
-    height: 40px; 
-}
-
-/* ラジオボタンのラベルのサイズ */
-input[type="radio"] + label {
-    font-size: 24px; 
-}
-
-/* リストの大きさ */
 select {
     font-size: 24px;
     padding: 10px;
 }
 
-/* グリッド */
 .grid-container {
     display: grid;
-    grid-template-columns: 1fr 1fr; 
-    gap: 10px; 
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
     margin-top: 20px;
 }
 
