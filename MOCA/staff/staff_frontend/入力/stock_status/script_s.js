@@ -29,7 +29,7 @@ async function submitStatus() {
     }
 
     if (!storeId || !stockStatus) {
-        alert('店名と混雑状況を選択してください');
+        alert('店名と在庫状況を選択してください');
         return;
     }
 

@@ -11,7 +11,7 @@ CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///classes.db'
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
-#--------------------------モデル作成------------------------------------------------------------
+#--------------------------------------------------------------------------------------
 class Class(db.Model):
     __tablename__ = 'lostproperty'
     id = db.Column(db.Integer, primary_key=True)
