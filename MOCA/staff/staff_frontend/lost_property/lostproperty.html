@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>落とし物登録</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="register_script.js" defer></script>
+</head>
+<body>
+    <header>
+        <h1>落とし物登録</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">ホーム</a></li>
+                <li><a href="register_lostproperty.html">落とし物登録</a></li>
+                <li><a href="update_lostproperty.html">落とし物ステータス変更</a></li>
+                <li><a href="lostproperty.html">落とし物表示</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <h2>落とし物を登録</h2>
+            <div class="form-container">
+                <div class="input-group">
+                    <label for="lostpropertyInput">落とし物の名前</label>
+                    <input type="text" id="lostpropertyInput" placeholder="落とし物の名前を入力">
+                </div>
+                <button onclick="addLostProperty()">登録</button>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 supported by TGRGroup</p>
+    </footer>
+</body>
+</html>

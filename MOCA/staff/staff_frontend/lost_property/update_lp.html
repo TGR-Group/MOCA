@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>落とし物ステータス変更</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="update_script.js" defer></script>
+</head>
+<body>
+    <header>
+        <h1>落とし物ステータス変更</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">ホーム</a></li>
+                <li><a href="register_lostproperty.html">落とし物登録</a></li>
+                <li><a href="update_lostproperty.html">落とし物ステータス変更</a></li>
+                <li><a href="lostproperty.html">落とし物表示</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <h2>ステータスを変更する落とし物を選択</h2>
+            <div class="form-container">
+                <div class="input-group">
+                    <label for="propertySelect">落とし物を選択</label>
+                    <select id="propertySelect"></select>
+                </div>
+                <div class="input-group">
+                    <label for="statusInput">受け取り済み</label>
+                    <input type="checkbox" id="statusInput">
+                </div>
+                <button onclick="updateStatus()">更新</button>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 supported by TGRGroup</p>
+    </footer>
+</body>
+</html>
