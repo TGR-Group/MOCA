@@ -16,6 +16,11 @@ class LostProperty(db.Model):
     lostproperty_name = db.Column(db.String(50), nullable=False)
     status = db.Column(db.Boolean, nullable=False, default=False)
 
+class Store(db.Model):
+    __tablename__ = 'store'
+    id = db.Column(db.Integer, primary_key=True)
+    store_name = db.Column(db.String(50), nullable=False)
+
 @app.route('/add_lostproperty', methods=['POST'])
 def add_lostproperty():
     data = request.json
@@ -39,6 +44,31 @@ def update_lostproperty(id):
         db.session.commit()
         return jsonify({'message': 'Lost property status updated successfully'})
     return jsonify({'message': 'Lost property not found'}), 404
+
+@app.route('/add_store', methods=['POST'])
+def add_store():
+    data = request.json
+    new_store = Store(store_name=data['store_name'])
+    db.session.add(new_store)
+    db.session.commit()
+    return jsonify({'message': 'Store added successfully'})
+
+@app.route('/get_stores', methods=['GET'])
+def get_stores():
+    stores = Store.query.all()
+    store_list = [{'id': s.id, 'store_name': s.store_name} for s in stores]
+    return jsonify(store_list)
+
+@app.route('/update_store_evaluation/<int:id>', methods=['POST'])
+def update_store_evaluation(id):
+    data = request.json
+    store = Store.query.get(id)
+    if store:
+        # この例では、評価を保存するための別のテーブルやカラムが必要です。
+        # ここでは仮にprintで評価を表示するだけにしています。
+        print(f'Store ID: {id}, Evaluation: {data["evaluation"]}')
+        return jsonify({'message': 'Store evaluation updated successfully'})
+    return jsonify({'message': 'Store not found'}), 404
 
 if __name__ == '__main__':
     with app.app_context():

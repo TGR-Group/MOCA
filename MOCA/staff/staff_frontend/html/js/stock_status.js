@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 });
 
 async function fetchStores() {
-    const response = await fetch('http://localhost:5000/get_stores');
+    const response = await fetch('http://localhost:5001/get_stores'); // ポート番号を修正
     const stores = await response.json();
     const storeSelect = document.getElementById('storeSelect');
 
@@ -33,7 +33,7 @@ async function submitStatus() {
         return;
     }
 
-    const response = await fetch('http://localhost:5000/update_store_evaluation/' + storeId, {
+    const response = await fetch('http://localhost:5001/update_store_evaluation/' + storeId, { // ポート番号を修正
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
