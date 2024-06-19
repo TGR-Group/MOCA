@@ -10,7 +10,7 @@ body {
     padding: 20px;
 }
 
-/* ヘッダン */
+/* ヘッ */
 header {
     background-color: #494997;
     color: #ffffff;
@@ -18,7 +18,6 @@ header {
     text-align: center;
 }
 
-/* ナビ */
 nav ul {
     list-style: none;
     padding: 0;
@@ -39,9 +38,54 @@ nav ul li a:hover {
     color: #d4d4d4;
 }
 
-/* メインコンテンツ */
 main {
     margin-top: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+table th, table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+table th {
+    background-color: #494997;
+    color: #ffffff;
+}
+
+table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* グリッド */
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 2列のグリッド */
+    gap: 10px; /* グリッドアイテム間のスペース */
+    margin-top: 20px;
+}
+
+.grid-header {
+    font-weight: bold;
+    background-color: #494997;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.grid-item {
+    background-color: #ffffff;
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 5px;
 }
 
 section {
@@ -52,7 +96,6 @@ section {
     margin-bottom: 20px;
 }
 
-/* フォームコンテナ */
 .form-container {
     background-color: #f9f9f9;
     border: 1px solid #ddd;
@@ -83,13 +126,13 @@ section {
 button {
     background-color: #4CAF50;
     color: white;
-    padding: 12px 20px;
+    padding: 12px 25px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
     display: block; /* フル幅で */
-    width: 100%; 
+    width: 95%;
 }
 
 button:hover {
@@ -105,47 +148,22 @@ footer {
     color: white;
 }
 
-/* スポンジボブ？ */
+/* レスポンシブ対応 */
 @media (max-width: 768px) {
     nav ul li {
         display: block;
-        margin: 10px 0;
+        margin: 10px 10;
     }
 }
 
-
+/* チェックボックス */
 input[type="checkbox"] {
     width: 24px;  /* チェックボックスの横幅 */
     height: 24px; /* チェックボックスの縦幅 */
-    /*後々%に直したい*/
 }
 
 #checkbox_good + label,
 #checkbox_soso + label,
 #checkbox_bad + label {
-    font-size: 24px; 
-}
-
-.grid-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr; 
-    gap: 10px; 
-    margin-top: 20px;
-}
-
-.grid-header {
-    font-weight: bold;
-    background-color: #494997;
-    color: white;
-    padding: 10px;
-    text-align: center;
-    border-radius: 5px;
-}
-
-.grid-item {
-    background-color: #ffffff;
-    padding: 10px;
-    text-align: center;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+    font-size: 24px;
 }

@@ -126,13 +126,13 @@ section {
 button {
     background-color: #4CAF50;
     color: white;
-    padding: 12px 20px;
+    padding: 12px 25px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
     display: block; /* フル幅で */
-    width: 100%;
+    width: 95%;
 }
 
 button:hover {
@@ -152,7 +152,7 @@ footer {
 @media (max-width: 768px) {
     nav ul li {
         display: block;
-        margin: 10px 0;
+        margin: 10px 10;
     }
 }
 
