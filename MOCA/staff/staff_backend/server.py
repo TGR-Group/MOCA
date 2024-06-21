@@ -2,11 +2,17 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
+from dotenv import load_dotenv
+import os
+
+# Load environment variables
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///classes.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
@@ -68,24 +74,7 @@ def update_store_evaluation(id):
         return jsonify({'message': 'Store evaluation updated successfully'})
     return jsonify({'message': 'Store not found'}), 404
 
-#ユーザーステータス
-@app.route('/get_user_status', methods=['GET'])
-def get_user_status():
-    lost_properties = LostProperty.query.all()
-    stores = Store.query.all()
-
-    lost_property_list = [{'id': p.id, 'lostproperty_name': p.lostproperty_name, 'status': p.status} for p in lost_properties]
-    store_list = [{'id': s.id, 'store_name': s.store_name} for s in stores]
-
-    user_status = {
-        'lost_properties': lost_property_list,
-        'stores': store_list
-    }
-
-    return jsonify(user_status)
-
-
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-    app.run(debug=True, port=5001)
+    app.run(port=5001)
