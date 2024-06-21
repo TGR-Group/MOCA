@@ -10,7 +10,7 @@ body {
     padding: 20px;
 }
 
-/* ヘッ */
+/* ヘッダー */
 header {
     background-color: #494997;
     color: #ffffff;
@@ -148,22 +148,100 @@ footer {
     color: white;
 }
 
-/* レスポンシブ対応 */
+/* レスポンシブ */
 @media (max-width: 768px) {
     nav ul li {
         display: block;
-        margin: 10px 10;
+        margin: 10px 0;
     }
 }
 
-/* チェックボックス */
-input[type="checkbox"] {
-    width: 24px;  /* チェックボックスの横幅 */
-    height: 24px; /* チェックボックスの縦幅 */
+input[type="checkbox"], input[type="radio"] {
+    width: 24px;
+    height: 24px;
 }
 
-#checkbox_good + label,
-#checkbox_soso + label,
-#checkbox_bad + label {
+input[type="checkbox"] + label, input[type="radio"] + label {
     font-size: 24px;
+    margin-left: 8px;
+}
+
+select {
+    font-size: 24px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 100%;
+}
+
+/* ハンバーガーメニュー */
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.bar {
+    height: 3px;
+    width: 25px;
+    background-color: #fff;
+    margin: 4px 0;
+    transition: 0.4s;
+}
+
+.nav-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.nav-list li {
+    margin: 0 10px;
+}
+
+.nav-list li a {
+    color: #ffffff;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.nav-list li a:hover {
+    color: #d4d4d4;
+}
+
+/* レスポンシブ */
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: flex;
+    }
+
+    .nav-list {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        text-align: center;
+    }
+
+    .nav-list.active {
+        display: flex;
+    }
+
+    .nav-list li {
+        width: 100%;
+        margin: 10px 0;
+    }
+
+    .nav-list.active .bar:nth-child(2) {
+        opacity: 0;
+    }
+
+    .nav-list.active .bar:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+    }
+
+    .nav-list.active .bar:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+    }
 }

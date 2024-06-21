@@ -64,11 +64,26 @@ def update_store_evaluation(id):
     data = request.json
     store = Store.query.get(id)
     if store:
-        # この例では、評価を保存するための別のテーブルやカラムが必要です。
-        # ここでは仮にprintで評価を表示するだけにしています。
         print(f'Store ID: {id}, Evaluation: {data["evaluation"]}')
         return jsonify({'message': 'Store evaluation updated successfully'})
     return jsonify({'message': 'Store not found'}), 404
+
+#ユーザーステータス
+@app.route('/get_user_status', methods=['GET'])
+def get_user_status():
+    lost_properties = LostProperty.query.all()
+    stores = Store.query.all()
+
+    lost_property_list = [{'id': p.id, 'lostproperty_name': p.lostproperty_name, 'status': p.status} for p in lost_properties]
+    store_list = [{'id': s.id, 'store_name': s.store_name} for s in stores]
+
+    user_status = {
+        'lost_properties': lost_property_list,
+        'stores': store_list
+    }
+
+    return jsonify(user_status)
+
 
 if __name__ == '__main__':
     with app.app_context():

@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>在庫入力</title>
-    <link rel="stylesheet" href="css\style.css">
-    <script src="js\stock_status.js" defer></script>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/stock_status.js" defer></script>
 </head>
 <body>
     <header>
@@ -28,9 +28,12 @@
                     <select id="storeSelect"></select>
                 </div>
                 <div>
-                    <input type="radio" name="status" id="status_good" value="◎"><label for="status_good">◎</label>
-                    <input type="radio" name="status" id="status_soso" value="△"><label for="status_soso">△</label>
-                    <input type="radio" name="status" id="status_bad" value="✕"><label for="status_bad">✕</label>
+                    <input type="radio" name="status" id="status_good" value="◎">
+                    <label for="status_good">◎</label>
+                    <input type="radio" name="status" id="status_soso" value="△">
+                    <label for="status_soso">△</label>
+                    <input type="radio" name="status" id="status_bad" value="✕">
+                    <label for="status_bad">✕</label>
                 </div>
                 <button onclick="submitStatus()">登録</button>
             </div>

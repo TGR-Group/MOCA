@@ -4,14 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>落とし物登録</title>
-    <link rel="stylesheet" href="css\style.css">
-    <script src="js\lostproperty.js" defer></script>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/lostproperty.js" defer></script>
 </head>
 <body>
     <header>
         <h1>落とし物登録</h1>
         <nav>
-            <ul>
+            <div class="menu-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            <ul class="nav-list">
                 <li><a href="home.html">ホーム</a></li>
                 <li><a href="lostproperty.html">落とし物登録</a></li>
                 <li><a href="update_lostproperty.html">落とし物ステータス変更</a></li>
@@ -34,5 +39,13 @@
     <footer>
         <p>&copy; 2024 supported by TGRGroup</p>
     </footer>
+    <script>
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navList = document.querySelector('.nav-list');
+
+        mobileMenu.addEventListener('click', () => {
+            navList.classList.toggle('active');
+        });
+    </script>
 </body>
 </html>
