@@ -16,6 +16,8 @@ services:
       - staff_net
     ports:
       - 8882:5001
+    volumes:
+      - ./staff_backend:/staff_backend:ro
     command: python server.py
     tty: true
     restart: always
