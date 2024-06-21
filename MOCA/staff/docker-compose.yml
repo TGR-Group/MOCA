@@ -1,0 +1,21 @@
+version: "3"
+
+networks:
+  staff_net:
+    internal: false
+
+services:
+  staff:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: "/staff_backend"
+    environment:
+      - TZ=Asia/Tokyo
+    networks:
+      - staff_net
+    ports:
+      - 8882:5001
+    command: python server.py
+    tty: true
+    restart: always
