@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>落とし物管理</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/lost_property.js" defer></script>
+</head>
+<body>
+    <header>
+        <h1>落とし物管理</h1>
+        <nav>
+            <div class="menu-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            <ul class="nav-list">
+                <li><a href="home.html">ホーム</a></li>
+                <li><a href="lostproperty.html">落とし物登録</a></li>
+                <li><a href="update_lostproperty.html">落とし物ステータス変更</a></li>
+                <li><a href="lostproperty.html">落とし物表示</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <h2>落とし物を登録</h2>
+            <div class="form-container">
+                <div class="input-group">
+                    <label for="lostpropertyInput">落とし物の名前</label>
+                    <input type="text" id="lostpropertyInput" placeholder="落とし物の名前を入力">
+                </div>
+                <button onclick="addLostProperty()">登録</button>
+            </div>
+        </section>
+        <section>
+            <h2>ステータスを変更する落とし物を選択</h2>
+            <div class="form-container">
+                <div class="input-group">
+                    <label for="propertySelect">落とし物を選択</label>
+                    <select id="propertySelect"></select>
+                </div>
+                <div class="input-group">
+                    <label for="statusInput">受け取り済み</label>
+                    <input type="checkbox" id="statusInput">
+                </div>
+                <button onclick="updateStatus()">更新</button>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 supported by TGRGroup</p>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const navList = document.querySelector('.nav-list');
+
+            mobileMenu.addEventListener('click', () => {
+                navList.classList.toggle('active');
+            });
+
+            const response = await fetch('http://localhost:5001/get_lostproperty');
+            const properties = await response.json();
+            const propertySelect = document.getElementById('propertySelect');
+
+            properties.forEach(property => {
+                const option = document.createElement('option');
+                option.value = property.id;
+                option.textContent = property.lostproperty_name;
+                propertySelect.appendChild(option);
+            });
+        });
+
+        async function addLostProperty() {
+            const lostpropertyName = document.getElementById('lostpropertyInput').value;
+
+            const response = await fetch('http://localhost:5001/add_lostproperty', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ lostproperty_name: lostpropertyName }),
+            });
+
+            if (!response.ok) {
+                const message = `An error has occurred: ${response.status}`;
+                throw new Error(message);
+            }
+
+            const result = await response.json();
+            alert(result.message);
+        }
+
+        async function updateStatus() {
+            const propertySelect = document.getElementById('propertySelect');
+            const propertyId = propertySelect.value;
+            const status = document.getElementById('statusInput').checked;
+
+            const response = await fetch(`http://localhost:5001/update_lostproperty/${propertyId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ status }),
+            });
+
+            if (!response.ok) {
+                const message = `An error has occurred: ${response.status}`;
+                throw new Error(message);
+            }
+
+            const result = await response.json();
+            alert(result.message);
+        }
+    </script>
+</body>
+</html>
