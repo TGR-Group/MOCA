@@ -25,6 +25,8 @@ class Store(db.Model):
     __tablename__ = 'store'
     id = db.Column(db.Integer, primary_key=True)
     store_name = db.Column(db.String(50), nullable=False)
+    evaluation = db.Column(db.String(10), nullable=True)
+
 
 @app.route('/add_lostproperty', methods=['POST'])
 def add_lostproperty():
