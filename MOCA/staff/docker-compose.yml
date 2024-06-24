@@ -1,0 +1,52 @@
+version: "3"
+
+networks:
+  staff_net_int:
+    internal: true
+  staff_net_ext:
+    internal: true
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: "/backend"
+    environment:
+      - TZ=Asia/Tokyo
+    networks:
+      - staff_net_int
+    expose:
+      - 5001
+    volumes:
+      - ./backend:/backend:ro
+    command: python server.py
+    tty: true
+    restart: always
+
+  db:
+    image: postgres:16
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - TZ=UTC
+    networks:
+      - staff_net_int
+    expose:
+      - 5432
+    volumes:
+      - db:/var/lib/postgresql/data
+    tty: true
+    restart: always
+
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    env_file:
+      - .env
+    environment:
+      - TZ=Asia/Tokyo
+    networks:
+      - staff_net_int
+      - staff_net_ext
+    command: tunnel run
+    tty: true
+    restart: always
