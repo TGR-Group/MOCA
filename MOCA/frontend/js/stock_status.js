@@ -1,55 +1,70 @@
 document.addEventListener('DOMContentLoaded', () => {
     const fetchStoreData = async () => {
-        const response = await fetch('https://staff-api.project-moca.com/get_stores');
-        const stores = await response.json();
-        const storeSelect = document.getElementById('storeSelect');
-        stores.forEach(store => {
-            const option = document.createElement('option');
-            option.value = store.id;
-            option.textContent = store.name;
-            storeSelect.appendChild(option);
-        });
+        try {
+            const response = await fetch('https://staff-api.project-moca.com/get_stores');
+            if (!response.ok) throw new Error(`Error: ${response.statusText}`);
+            const stores = await response.json();
+            const storeSelect = document.getElementById('storeSelect');
+            stores.forEach(store => {
+                const option = document.createElement('option');
+                option.value = store.id;
+                option.textContent = store.name;
+                storeSelect.appendChild(option);
+            });
+        } catch (error) {
+            console.error('Failed to fetch stores:', error);
+        }
     };
 
     fetchStoreData();
 });
 
 async function writeToSpreadsheet() {
-    const storename = document.getElementById('storenameInput').value;
-    const response = await fetch('https://staff-api.project-moca.com/add_store', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name: storename }),
-    });
+    try {
+        const storename = document.getElementById('storenameInput').value;
+        const response = await fetch('https://staff-api.project-moca.com/add_store', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ store_name: storename }),
+        });
 
-    if (!response.ok) {
-        const message = `エラーが発生しました: ${response.status}`;
-        throw new Error(message);
+        if (!response.ok) {
+            const message = `エラーが発生しました: ${response.status}`;
+            throw new Error(message);
+        }
+
+        const result = await response.json();
+        alert(result.message);
+    } catch (error) {
+        console.error('Error:', error);
+        alert(error.message);
     }
-
-    const result = await response.json();
-    alert(result.message);
 }
 
 async function submitStatus() {
-    const storeSelect = document.getElementById('storeSelect');
-    const storeId = storeSelect.value;
-    const status = document.querySelector('input[name="status"]:checked').value;
-    const response = await fetch(`https://staff-api.project-moca.com/update_stock_status/${storeId}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ status }),
-    });
+    try {
+        const storeSelect = document.getElementById('storeSelect');
+        const storeId = storeSelect.value;
+        const status = document.querySelector('input[name="status"]:checked').value;
+        const response = await fetch(`https://staff-api.project-moca.com/update_stock_status/${storeId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ status }),
+        });
 
-    if (!response.ok) {
-        const message = `エラーが発生しました: ${response.status}`;
-        throw new Error(message);
+        if (!response.ok) {
+            const message = `エラーが発生しました: ${response.status}`;
+            throw new Error(message);
+        }
+
+        const result = await response.json();
+        alert(result.message);
+    } catch (error) {
+        console.error('Error:', error);
+        alert(error.message);
     }
-
-    const result = await response.json();
-    alert(result.message);
 }
