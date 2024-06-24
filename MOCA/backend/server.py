@@ -27,7 +27,6 @@ class Store(db.Model):
     store_name = db.Column(db.String(50), nullable=False)
     evaluation = db.Column(db.String(10), nullable=True)
 
-
 @app.route('/add_lostproperty', methods=['POST'])
 def add_lostproperty():
     data = request.json
@@ -64,7 +63,6 @@ def add_store():
         db.session.rollback()
         return jsonify({'message': f'An error occurred: {str(e)}'}), 500
 
-
 @app.route('/get_stores', methods=['GET'])
 def get_stores():
     stores = Store.query.all()
@@ -84,7 +82,6 @@ def update_store_evaluation(id):
     except Exception as e:
         app.logger.error(f'Error updating store evaluation: {e}')
         return jsonify({'message': f'An error occurred: {str(e)}'}), 500
-
 
 if __name__ == '__main__':
     with app.app_context():

@@ -52,12 +52,12 @@ async function submitStatus() {
         const storeSelect = document.getElementById('storeSelect');
         const storeId = storeSelect.value;
         const status = document.querySelector('input[name="status"]:checked').value;
-        const response = await fetch(`https://staff-api.project-moca.com/update_store_evaluation/${storeId}`, { // APIエンドポイントを指定
+        const response = await fetch(`https://staff-api.project-moca.com/update_store_evaluation/${storeId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ status }),
+            body: JSON.stringify({ evaluation: status }), // evaluationフィールドに対応
         });
 
         if (!response.ok) {
@@ -72,3 +72,4 @@ async function submitStatus() {
         alert(error.message);
     }
 }
+
