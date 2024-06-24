@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const fetchStoreData = async () => {
-        const response = await fetch('http://localhost:5001/get_stores');
+        const response = await fetch('https://staff-api.project-moca.com/get_stores');
         const stores = await response.json();
         const storeSelect = document.getElementById('storeSelect');
         stores.forEach(store => {
@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function writeToSpreadsheet() {
     const storename = document.getElementById('storenameInput').value;
-    const response = await fetch('http://localhost:5001/add_store', {
+    const response = await fetch('https://staff-api.project-moca.com/add_store', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ async function submitStatus() {
     const storeSelect = document.getElementById('storeSelect');
     const storeId = storeSelect.value;
     const status = document.querySelector('input[name="status"]:checked').value;
-    const response = await fetch(`http://localhost:5001/update_stock_status/${storeId}`, {
+    const response = await fetch(`https://staff-api.project-moca.com/update_stock_status/${storeId}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

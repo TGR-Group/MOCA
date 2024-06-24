@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    const response = await fetch('/api/queues');
+    const response = await fetch('https://staff-api.project-moca.com/api/queues');
     const queues = await response.json();
 
     const waitingTableBody = document.getElementById('waitingTable').getElementsByTagName('tbody')[0];
@@ -55,7 +55,7 @@ function formatUserId(userId) {
 
 async function updateStatus(userId, newStatus) {
     try {
-        const response = await fetch(`/staff/update_status`, {
+        const response = await fetch(`https://staff-api.project-moca.com/staff/update_status`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
