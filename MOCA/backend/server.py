@@ -53,11 +53,16 @@ def update_lostproperty(id):
 
 @app.route('/add_store', methods=['POST'])
 def add_store():
-    data = request.json
-    new_store = Store(store_name=data['store_name'])
-    db.session.add(new_store)
-    db.session.commit()
-    return jsonify({'message': 'Store added successfully'})
+    try:
+        data = request.json
+        new_store = Store(store_name=data['store_name'])
+        db.session.add(new_store)
+        db.session.commit()
+        return jsonify({'message': 'Store added successfully'})
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'message': f'An error occurred: {str(e)}'}), 500
+
 
 @app.route('/get_stores', methods=['GET'])
 def get_stores():
