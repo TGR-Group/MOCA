@@ -10,6 +10,6 @@ ENV PIP_DISABLE_PIP_VERSION_CHECK 1
 COPY ./backend/requirements.txt ./backend/requirements.txt
 # Install requirements
 RUN pip install --break-system-packages -U pip setuptools && \
-    pip install --break-system-packages --no-cache-dir -U -r ./requirements.txt && \
+    pip install --break-system-packages --no-cache-dir -U -r ./backend/requirements.txt && \
     pip cache purge
 RUN rm ./backend/requirements.txt

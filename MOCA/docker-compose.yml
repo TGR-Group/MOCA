@@ -6,6 +6,9 @@ networks:
   staff_net_ext:
     internal: true
 
+volumes:
+  db:
+
 services:
   frontend:
     image: nginx:latest
