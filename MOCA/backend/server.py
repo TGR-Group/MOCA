@@ -5,7 +5,6 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 import os
 
-# Load environment variables from .env file
 load_dotenv()
 
 app = Flask(__name__)
@@ -72,12 +71,18 @@ def get_stores():
 
 @app.route('/update_store_evaluation/<int:id>', methods=['POST'])
 def update_store_evaluation(id):
-    data = request.json
-    store = Store.query.get(id)
-    if store:
-        print(f'Store ID: {id}, Evaluation: {data["evaluation"]}')
-        return jsonify({'message': 'Store evaluation updated successfully'})
-    return jsonify({'message': 'Store not found'}), 404
+    try:
+        data = request.json
+        store = Store.query.get(id)
+        if store:
+            store.evaluation = data["evaluation"]  
+            db.session.commit()
+            return jsonify({'message': 'Store evaluation updated successfully'})
+        return jsonify({'message': 'Store not found'}), 404
+    except Exception as e:
+        app.logger.error(f'Error updating store evaluation: {e}')
+        return jsonify({'message': f'An error occurred: {str(e)}'}), 500
+
 
 if __name__ == '__main__':
     with app.app_context():
