@@ -4,7 +4,7 @@ networks:
   staff_net_int:
     internal: true
   staff_net_ext:
-    internal: true
+    internal: false
 
 volumes:
   db:
@@ -31,7 +31,7 @@ services:
     working_dir: "/backend"
     environment:
       - TZ=Asia/Tokyo
-      - DATABASE_URL=postgres://postgres:postgres@db:5432/staff
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/staff
     networks:
       - staff_net_int
     expose:
@@ -46,7 +46,8 @@ services:
     image: postgres:16
     environment:
       - POSTGRES_PASSWORD=postgres
-      - TZ=UTC
+      - POSTGRES_DB=staff
+      - TZ=Asia/Tokyo
     networks:
       - staff_net_int
     expose:
