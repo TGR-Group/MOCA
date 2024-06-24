@@ -4,7 +4,7 @@ networks:
   staff_net_int:
     internal: true
   staff_net_ext:
-    internal: true
+    internal: false
 
 volumes:
   db:
@@ -31,14 +31,14 @@ services:
     working_dir: "/backend"
     environment:
       - TZ=Asia/Tokyo
-      - DATABASE_URL=postgres://postgres:postgres@db:5432/staff
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/staff
     networks:
       - staff_net_int
     expose:
       - 5001
     volumes:
       - ./backend:/backend:ro
-    command: python server.py
+    command: flask run --host=0.0.0.0 --port=5001
     tty: true
     restart: always
 
@@ -46,7 +46,8 @@ services:
     image: postgres:16
     environment:
       - POSTGRES_PASSWORD=postgres
-      - TZ=UTC
+      - POSTGRES_DB=staff
+      - TZ=Asia/Tokyo
     networks:
       - staff_net_int
     expose:
