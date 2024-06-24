@@ -12,6 +12,8 @@ services:
     working_dir: "/usr/share/nginx/html"
     environment:
       - TZ=Asia/Tokyo
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
     networks:
       - staff_net_int
     expose:
@@ -26,6 +28,7 @@ services:
     working_dir: "/backend"
     environment:
       - TZ=Asia/Tokyo
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/staff
     networks:
       - staff_net_int
     expose:
