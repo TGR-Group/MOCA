@@ -28,7 +28,6 @@ class Store(db.Model):
     evaluation = db.Column(db.String(10), nullable=True)
     item_name = db.Column(db.String(50), nullable=True)
     quantity = db.Column(db.Integer, nullable=True)
-    status = db.Column(db.Boolean, nullable=True, default=True)
 
 @app.route('/add_lostproperty', methods=['POST'])
 def add_lostproperty():
@@ -89,7 +88,7 @@ def update_store_evaluation(id):
 @app.route('/get_store_evaluation', methods=['GET'])
 def get_store_evaluation():
     stores = Store.query.all()
-    evaluation = [{'store_name': s.store_name, 'status': s.status} for s in stores]
+    evaluation = [{'store_name': s.store_name, 'evaluation': s.evaluation} for s in stores]
     return jsonify(evaluation)
 
 if __name__ == '__main__':
