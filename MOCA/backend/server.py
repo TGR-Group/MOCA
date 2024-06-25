@@ -83,11 +83,11 @@ def update_store_evaluation(id):
         app.logger.error(f'Error updating store evaluation: {e}')
         return jsonify({'message': f'An error occurred: {str(e)}'}), 500
 
-@app.route('/get_stock_status', methods=['GET'])
-def get_stock_status():
-    stocks = StockStatus.query.all()
-    stock_list = [{"product_name": stock.product_name, "quantity": stock.quantity} for stock in stocks]
-    return jsonify(stock_list)
+@app.route('/get_store_evaluation', methods=['GET'])
+def get_store_evaluation():
+    stores = Store.query.all()
+    evaluation = [{'store_name': s.store_name, 'item_name': s.item_name, 'quantity': s.quantity, 'status': s.status} for s in stores]
+    return jsonify(evaluation)
 
 if __name__ == '__main__':
     with app.app_context():
