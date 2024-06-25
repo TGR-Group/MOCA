@@ -89,7 +89,7 @@ def update_store_evaluation(id):
 @app.route('/get_store_evaluation', methods=['GET'])
 def get_store_evaluation():
     stores = Store.query.all()
-    evaluation = [{'store_name': s.store_name, 'item_name': s.item_name, 'quantity': s.quantity, 'status': s.status} for s in stores]
+    evaluation = [{'store_name': s.store_name, 'status': s.status} for s in stores]
     return jsonify(evaluation)
 
 if __name__ == '__main__':
