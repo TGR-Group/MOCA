@@ -83,6 +83,12 @@ def update_store_evaluation(id):
         app.logger.error(f'Error updating store evaluation: {e}')
         return jsonify({'message': f'An error occurred: {str(e)}'}), 500
 
+@app.route('/get_stock_status', methods=['GET'])
+def get_stock_status():
+    stocks = StockStatus.query.all()
+    stock_list = [{"product_name": stock.product_name, "quantity": stock.quantity} for stock in stocks]
+    return jsonify(stock_list)
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
