@@ -26,6 +26,8 @@ class Store(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     store_name = db.Column(db.String(50), nullable=False)
     evaluation = db.Column(db.String(10), nullable=True)
+    item_name = db.Column(db.String(50), nullable=True)
+    quantity = db.Column(db.Integer, nullable=True)
 
 @app.route('/add_lostproperty', methods=['POST'])
 def add_lostproperty():
@@ -75,13 +77,19 @@ def update_store_evaluation(id):
         data = request.json
         store = Store.query.get(id)
         if store:
-            store.evaluation = data["evaluation"]  
+            store.evaluation = data['evaluation']
             db.session.commit()
             return jsonify({'message': 'Store evaluation updated successfully'})
         return jsonify({'message': 'Store not found'}), 404
     except Exception as e:
         app.logger.error(f'Error updating store evaluation: {e}')
         return jsonify({'message': f'An error occurred: {str(e)}'}), 500
+
+@app.route('/get_store_evaluation', methods=['GET'])
+def get_store_evaluation():
+    stores = Store.query.all()
+    evaluation = [{'store_name': s.store_name, 'evaluation': s.evaluation} for s in stores]
+    return jsonify(evaluation)
 
 if __name__ == '__main__':
     with app.app_context():
