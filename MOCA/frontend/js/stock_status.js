@@ -1,13 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // 店舗データを取得して選択ボックスに追加する関数
     const fetchStoreData = async () => {
         try {
-            const response = await fetch('https://staff-api.project-moca.com/get_stores'); // APIエンドポイントを指定
+            const response = await fetchWithAuth('https://staff-api.project-moca.com/get_stores');
             if (!response.ok) throw new Error(`Error: ${response.statusText}`);
             
             const stores = await response.json();
             const storeSelect = document.getElementById('storeSelect');
-            storeSelect.innerHTML = ''; // 既存のオプションをクリア
+            storeSelect.innerHTML = ''; 
             
             stores.forEach(store => {
                 const option = document.createElement('option');
@@ -26,12 +25,13 @@ document.addEventListener('DOMContentLoaded', () => {
 async function writeToSpreadsheet() {
     try {
         const storename = document.getElementById('storenameInput').value;
-        const response = await fetch('https://staff-api.project-moca.com/add_store', { 
+        const staffId = sessionStorage.getItem('staffId');
+        const response = await fetchWithAuth('https://staff-api.project-moca.com/add_store', { 
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ store_name: storename }),
+            body: JSON.stringify({ store_name: storename, staffId }),
         });
 
         if (!response.ok) {
@@ -52,12 +52,13 @@ async function submitStatus() {
         const storeSelect = document.getElementById('storeSelect');
         const storeId = storeSelect.value;
         const status = document.querySelector('input[name="status"]:checked').value;
-        const response = await fetch(`https://staff-api.project-moca.com/update_store_evaluation/${storeId}`, {
+        const staffId = sessionStorage.getItem('staffId');
+        const response = await fetchWithAuth(`https://staff-api.project-moca.com/update_store_evaluation/${storeId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ evaluation: status }), // evaluationフィールドに対応
+            body: JSON.stringify({ evaluation: status, staffId }),
         });
 
         if (!response.ok) {
@@ -73,3 +74,16 @@ async function submitStatus() {
     }
 }
 
+async function fetchWithAuth(url, options = {}) {
+    const token = sessionStorage.getItem('authToken');
+    if (!token) {
+        throw new Error('未認証');
+    }
+
+    const headers = {
+        ...options.headers,
+        'Authorization': `Bearer ${token}`
+    };
+
+    return fetch(url, { ...options, headers });
+}

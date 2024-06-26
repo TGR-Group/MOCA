@@ -3,63 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>待ち状況表示</title>
+    <title>ユーザーステータス管理</title>
     <link rel="stylesheet" href="css/style.css">
-    <script src="script/UserInfo.js"></script>
+    <script src="js/UserInfo.js" defer></script>
 </head>
 <body>
     <header>
-        <h1>待ち状況管理</h1>
+        <h1>ユーザーステータス管理</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">ホーム</a></li>
+                <li><a href="lostproperty.html">落とし物</a></li>
+                <li><a href="stock_status.html">在庫状況</a></li>
+                <li><a href="UserInfo.html">ユーザーステータス</a></li>
+            </ul>
+        </nav>
     </header>
     <main>
         <section>
-            <h2>待ち状況</h2>
-            <table id="waitingTable">
-                <thead>
-                    <tr>
-                        <th>呼び出し順</th>
-                        <th>ユーザー番号</th>
-                        <th>アクション</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- 待ち状況データ -->
-                </tbody>
-            </table>
+            <h2>店舗選択</h2>
+            <select id="storeSelect">
+            </select>
         </section>
         <section>
-            <h2>呼び出し中</h2>
-            <table id="calledTable">
+            <h2>ユーザーステータス一覧</h2>
+            <table id="userStatusTable">
                 <thead>
                     <tr>
-                        <th>呼び出し順</th>
-                        <th>ユーザー番号</th>
+                        <th>順番</th>
+                        <th>ユーザーID</th>
+                        <th>ステータス</th>
                         <th>アクション</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- 呼び出し中データ -->
                 </tbody>
             </table>
         </section>
-        <section>
-            <h2>入場中</h2>
-            <table id="inTable">
-                <thead>
-                    <tr>
-                        <th>ユーザー番号</th>
-                        <th>アクション</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- 入場中データ -->
-                </tbody>
-            </table>
-        </section>
-        
     </main>
     <footer>
-        <p>&copy; 2024 待ち状況管理システム</p>
+        <p>&copy; 2024 ユーザーステータス管理システム</p>
     </footer>
 </body>
 </html>

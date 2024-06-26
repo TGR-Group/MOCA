@@ -1,82 +1,111 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    const response = await fetch('https://staff-api.project-moca.com/api/queues');
-    const queues = await response.json();
+    if (!isLoggedIn()) {
+        window.location.href = '/login.html'; // ログインページへのリダイレクト
+        return;
+    }
 
-    const waitingTableBody = document.getElementById('waitingTable').getElementsByTagName('tbody')[0];
-    const calledTableBody = document.getElementById('calledTable').getElementsByTagName('tbody')[0];
-    const inTableBody = document.getElementById('inTable').getElementsByTagName('tbody')[0];
-
-    queues.forEach(queue => {
-        const row = document.createElement('tr');
-        if (queue.status === 'wait' || queue.status === 'called') {
-            row.insertCell(0).textContent = queue.call_order;
-            row.insertCell(1).textContent = formatUserId(queue.user_id);
-        } else {
-            row.insertCell(0).textContent = formatUserId(queue.user_id);
-        }
-
-        if (queue.status === 'wait') {
-            const actionCell = row.insertCell(2);
-            const callButton = document.createElement('button');
-            callButton.textContent = '呼び出し済みに変更';
-            callButton.onclick = () => updateStatus(queue.user_id, 'called');
-            actionCell.appendChild(callButton);
-
-            const inButton = document.createElement('button');
-            inButton.textContent = '入場中に変更';
-            inButton.onclick = () => updateStatus(queue.user_id, 'in');
-            actionCell.appendChild(inButton);
-            
-            waitingTableBody.appendChild(row);
-        } else if (queue.status === 'called') {
-            const actionCell = row.insertCell(2);
-            const inButton = document.createElement('button');
-            inButton.textContent = '入場中に変更';
-            inButton.onclick = () => updateStatus(queue.user_id, 'in');
-            actionCell.appendChild(inButton);
-            calledTableBody.appendChild(row);
-        } else if (queue.status === 'in') {
-            const actionCell = row.insertCell(1);
-            const exitButton = document.createElement('button');
-            exitButton.textContent = '退出';
-            exitButton.onclick = () => updateStatus(queue.user_id, 'exited');
-            actionCell.appendChild(exitButton);
-            inTableBody.appendChild(row);
-        }
-    });
-
-    sortTable(waitingTableBody);
-    sortTable(calledTableBody);
-});
-
-function formatUserId(userId) {
-    return userId.toString().padStart(5, '0');
-}
-
-async function updateStatus(userId, newStatus) {
     try {
-        const response = await fetch(`https://staff-api.project-moca.com/staff/update_status`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ userId, newStatus })
+        const storeResponse = await fetchWithAuth('https://staff-api.project-moca.com/stores');
+        const stores = await storeResponse.json();
+        const storeSelect = document.getElementById('storeSelect');
+
+        stores.forEach(store => {
+            const option = document.createElement('option');
+            option.value = store.id;
+            option.textContent = store.name;
+            storeSelect.appendChild(option);
         });
 
-        if (!response.ok) {
-            const result = await response.json();
-            throw new Error('ステータスの更新に失敗しました: ' + result.error);
+        storeSelect.addEventListener('change', loadUserStatus);
+
+        if (stores.length > 0) {
+            storeSelect.value = stores[0].id;
+            loadUserStatus();
         }
 
-        alert('ステータスが更新されました');
-        location.reload(); 
     } catch (error) {
-        alert(error.message);
+        console.error('Error fetching stores:', error);
+    }
+});
+
+async function loadUserStatus() {
+    try {
+        const storeId = document.getElementById('storeSelect').value;
+        const response = await fetchWithAuth(`https://staff-api.project-moca.com/stores/${storeId}/users`);
+        const users = await response.json();
+
+        const userStatusTableBody = document.getElementById('userStatusTable').getElementsByTagName('tbody')[0];
+        userStatusTableBody.innerHTML = '';
+
+        users.forEach((user, index) => {
+            const row = document.createElement('tr');
+            row.insertCell(0).textContent = index + 1;
+            row.insertCell(1).textContent = user.id;
+            const statusCell = row.insertCell(2);
+            statusCell.textContent = user.status || '不明';
+
+            const actionCell = row.insertCell(3);
+            const statusSelect = document.createElement('select');
+            ['active', 'inactive', 'banned'].forEach(status => {
+                const option = document.createElement('option');
+                option.value = status;
+                option.text = status;
+                if (user.status === status) {
+                    option.selected = true;
+                }
+                statusSelect.appendChild(option);
+            });
+
+            const updateButton = document.createElement('button');
+            updateButton.textContent = '更新';
+            updateButton.onclick = async () => {
+                const newStatus = statusSelect.value;
+                try {
+                    const staffId = sessionStorage.getItem('staffId');
+                    const updateResponse = await fetchWithAuth(`https://staff-api.project-moca.com/stores/${storeId}/users/${user.id}/status`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ status: newStatus, staffId })
+                    });
+
+                    if (!updateResponse.ok) {
+                        const result = await updateResponse.json();
+                        throw new Error('ステータスの更新に失敗しました: ' + result.error);
+                    }
+
+                    alert('ステータスが更新されました');
+                    statusCell.textContent = newStatus;
+                } catch (error) {
+                    alert(error.message);
+                }
+            };
+
+            actionCell.appendChild(statusSelect);
+            actionCell.appendChild(updateButton);
+
+            userStatusTableBody.appendChild(row);
+        });
+    } catch (error) {
+        console.error('Error fetching user status:', error);
     }
 }
 
-function sortTable(tbody) {
-    Array.from(tbody.getElementsByTagName('tr'))
-        .sort((a, b) => a.cells[0].textContent - b.cells[0].textContent)
-        .forEach(row => tbody.appendChild(row));
+function isLoggedIn() {
+    return sessionStorage.getItem('authToken') !== null;
+}
+
+async function fetchWithAuth(url, options = {}) {
+    const token = sessionStorage.getItem('authToken');
+    if (!token) {
+        throw new Error('未認証');
+    }
+
+    const headers = {
+        ...options.headers,
+        'Authorization': `Bearer ${token}`
+    };
+
+    return fetch(url, { ...options, headers });
 }
