@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const fetchStoreData = async () => {
         try {
-            const response = await fetchWithAuth('https://staff-api.project-moca.com/get_stores');
+            const response = await fetchWithAuth('https://api.project-moca.com/get_stores');
             if (!response.ok) throw new Error(`Error: ${response.statusText}`);
             
             const stores = await response.json();
@@ -26,7 +26,7 @@ async function writeToSpreadsheet() {
     try {
         const storename = document.getElementById('storenameInput').value;
         const staffId = sessionStorage.getItem('staffId');
-        const response = await fetchWithAuth('https://staff-api.project-moca.com/add_store', { 
+        const response = await fetchWithAuth('https://api.project-moca.com/add_store', { 
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -53,7 +53,7 @@ async function submitStatus() {
         const storeId = storeSelect.value;
         const status = document.querySelector('input[name="status"]:checked').value;
         const staffId = sessionStorage.getItem('staffId');
-        const response = await fetchWithAuth(`https://staff-api.project-moca.com/update_store_evaluation/${storeId}`, {
+        const response = await fetchWithAuth(`https://api.project-moca.com/update_store_evaluation/${storeId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

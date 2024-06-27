@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    const response = await fetch('https://staff-api.project-moca.com/get_lostproperty');
+    const response = await fetch('https://api.project-moca.com/get_lostproperty');
     const properties = await response.json();
     const tableBody = document.getElementById('lostPropertyTable').getElementsByTagName('tbody')[0];
 

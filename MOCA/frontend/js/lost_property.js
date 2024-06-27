@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         navList.classList.toggle('active');
     });
 
-    const response = await fetchWithAuth('https://staff-api.project-moca.com/get_lostproperty');
+    const response = await fetchWithAuth('https://api.project-moca.com/get_lostproperty');
     const properties = await response.json();
     const propertySelect = document.getElementById('propertySelect');
 
@@ -22,7 +22,7 @@ async function addLostProperty() {
     const lostpropertyName = document.getElementById('lostpropertyInput').value;
     const staffId = sessionStorage.getItem('staffId');
 
-    const response = await fetchWithAuth('https://staff-api.project-moca.com/add_lostproperty', {
+    const response = await fetchWithAuth('https://api.project-moca.com/add_lostproperty', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -45,7 +45,7 @@ async function updateStatus() {
     const status = document.getElementById('statusInput').checked;
     const staffId = sessionStorage.getItem('staffId');
 
-    const response = await fetchWithAuth(`https://staff-api.project-moca.com/update_lostproperty/${propertyId}`, {
+    const response = await fetchWithAuth(`https://api.project-moca.com/update_lostproperty/${propertyId}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

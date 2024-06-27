@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', async () => {
     if (!isLoggedIn()) {
-        window.location.href = '/login.html'; // ログインページへのリダイレクト
+        window.location.href = '/'; // ログインページへのリダイレクト
         return;
     }
 
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 async function loadUserStatus() {
     try {
         const storeId = document.getElementById('storeSelect').value;
-        const response = await fetchWithAuth(`https://staff-api.project-moca.com/stores/${storeId}/users`);
+        const response = await fetchWithAuth(`https://api.project-moca.com/stores/${storeId}/users`);
         const users = await response.json();
 
         const userStatusTableBody = document.getElementById('userStatusTable').getElementsByTagName('tbody')[0];
@@ -62,7 +62,7 @@ async function loadUserStatus() {
                 const newStatus = statusSelect.value;
                 try {
                     const staffId = sessionStorage.getItem('staffId');
-                    const updateResponse = await fetchWithAuth(`https://staff-api.project-moca.com/stores/${storeId}/users/${user.id}/status`, {
+                    const updateResponse = await fetchWithAuth(`https://api.project-moca.com/stores/${storeId}/users/${user.id}/status`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
