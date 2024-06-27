@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', async () => {
     if (!isLoggedIn()) {
-        window.location.href = '/'; // ログインページへのリダイレクト
+        window.location.href = 'login.html'; // ログインページへのリダイレクト
         return;
     }
 
@@ -61,7 +61,7 @@ async function loadUserStatus() {
             updateButton.onclick = async () => {
                 const newStatus = statusSelect.value;
                 try {
-                    const staffId = sessionStorage.getItem('staffId');
+                    const staffId = localStorage.getItem('staffId');
                     const updateResponse = await fetchWithAuth(`https://api.project-moca.com/stores/${storeId}/users/${user.id}/status`, {
                         method: 'POST',
                         headers: {
@@ -93,11 +93,11 @@ async function loadUserStatus() {
 }
 
 function isLoggedIn() {
-    return sessionStorage.getItem('authToken') !== null;
+    return localStorage.getItem('authToken') !== null;
 }
 
 async function fetchWithAuth(url, options = {}) {
-    const token = sessionStorage.getItem('authToken');
+    const token = localStorage.getItem('authToken');
     if (!token) {
         throw new Error('未認証');
     }

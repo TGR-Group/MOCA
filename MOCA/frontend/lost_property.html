@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -11,14 +10,9 @@
     <header>
         <h1>落とし物管理</h1>
         <nav>
-            <div class="menu-toggle" id="mobile-menu">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </div>
             <ul class="nav-list">
                 <li><a href="">ホーム</a></li>
-                <li><a href="lostproperty.html">落とし物関連</a></li>
+                <li><a href="lost_property.html">落とし物関連</a></li>
                 <li><a href="user_status.html">落とし物表示</a></li>
             </ul>
         </nav>
@@ -31,7 +25,7 @@
                     <label for="lostpropertyInput">落とし物の名前</label>
                     <input type="text" id="lostpropertyInput" placeholder="落とし物の名前を入力">
                 </div>
-                <button onclick="addLostProperty()">登録</button>
+                <button id="addLostPropertyButton">登録</button>
             </div>
         </section>
         <section>
@@ -45,7 +39,7 @@
                     <label for="statusInput">受け取り済み</label>
                     <input type="checkbox" id="statusInput">
                 </div>
-                <button onclick="updateStatus()">更新</button>
+                <button id="updateStatusButton">更新</button>
             </div>
         </section>
     </main>

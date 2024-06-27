@@ -1,4 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
+    if (!localStorage.getItem('authToken')) {
+        window.location.href = 'login.html';
+        return;
+    }
+
     const fetchStoreData = async () => {
         try {
             const response = await fetchWithAuth('https://api.project-moca.com/get_stores');
@@ -25,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
 async function writeToSpreadsheet() {
     try {
         const storename = document.getElementById('storenameInput').value;
-        const staffId = sessionStorage.getItem('staffId');
+        const staffId = localStorage.getItem('staffId');
         const response = await fetchWithAuth('https://api.project-moca.com/add_store', { 
             method: 'POST',
             headers: {
@@ -52,7 +57,7 @@ async function submitStatus() {
         const storeSelect = document.getElementById('storeSelect');
         const storeId = storeSelect.value;
         const status = document.querySelector('input[name="status"]:checked').value;
-        const staffId = sessionStorage.getItem('staffId');
+        const staffId = localStorage.getItem('staffId');
         const response = await fetchWithAuth(`https://api.project-moca.com/update_store_evaluation/${storeId}`, {
             method: 'POST',
             headers: {
@@ -75,7 +80,7 @@ async function submitStatus() {
 }
 
 async function fetchWithAuth(url, options = {}) {
-    const token = sessionStorage.getItem('authToken');
+    const token = localStorage.getItem('authToken');
     if (!token) {
         throw new Error('未認証');
     }
