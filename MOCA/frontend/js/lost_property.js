@@ -1,68 +1,40 @@
-document.addEventListener('DOMContentLoaded', async () => {
-    const mobileMenu = document.getElementById('mobile-menu');
-    const navList = document.querySelector('.nav-list');
+document.addEventListener('DOMContentLoaded', () => {
+    const addLostPropertyButton = document.querySelector('button[onclick="addLostProperty()"]');
+    const updateStatusButton = document.querySelector('button[onclick="updateStatus()"]');
 
-    mobileMenu.addEventListener('click', () => {
-        navList.classList.toggle('active');
-    });
+    if (addLostPropertyButton) {
+        addLostPropertyButton.addEventListener('click', addLostProperty);
+    }
 
-    const response = await fetchWithAuth('https://api.project-moca.com/get_lostproperty');
-    const properties = await response.json();
-    const propertySelect = document.getElementById('propertySelect');
+    if (updateStatusButton) {
+        updateStatusButton.addEventListener('click', updateStatus);
+    }
 
-    properties.forEach(property => {
-        const option = document.createElement('option');
-        option.value = property.id;
-        option.textContent = property.lostPropertyName;  // フィールド名を修正
-        propertySelect.appendChild(option);
-    });
+    if (!isLoggedIn()) {
+        redirectToLogin();
+    } else {
+        fetchLostProperties();
+    }
 });
 
-async function addLostProperty() {
-    const lostpropertyName = document.getElementById('lostpropertyInput').value;
-
-    const response = await fetchWithAuth('https://api.project-moca.com/add_lostproperty', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ lostproperty_name: lostpropertyName }),  // スタッフIDは不要
-    });
-
-    if (!response.ok) {
-        const message = `An error has occurred: ${response.status}`;
-        throw new Error(message);
-    }
-
-    const result = await response.json();
-    alert(result.message);
+function isLoggedIn() {
+    return localStorage.getItem('username') && localStorage.getItem('password');
 }
 
-async function updateStatus() {
-    const propertySelect = document.getElementById('propertySelect');
-    const propertyId = propertySelect.value;
-    const status = document.getElementById('statusInput').checked;
+function redirectToLogin() {
+    window.location.href = 'login.html';
+}
 
-    const response = await fetchWithAuth(`https://api.project-moca.com/update_lostproperty/${propertyId}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ status }),  // スタッフIDは不要
-    });
-
-    if (!response.ok) {
-        const message = `An error has occurred: ${response.status}`;
-        throw new Error(message);
-    }
-
-    const result = await response.json();
-    alert(result.message);
+function getAuthCredentials() {
+    const username = localStorage.getItem('username');
+    const password = localStorage.getItem('password');
+    return { username, password };
 }
 
 async function fetchWithAuth(url, options = {}) {
     const { username, password } = getAuthCredentials();
     if (!username || !password) {
+        redirectToLogin();
         throw new Error('未認証');
     }
 
@@ -74,13 +46,85 @@ async function fetchWithAuth(url, options = {}) {
     return fetch(url, { ...options, headers });
 }
 
-function setAuthCredentials(username, password) {
-    localStorage.setItem('username', username);
-    localStorage.setItem('password', password);
+async function addLostProperty() {
+    const lostPropertyName = document.getElementById('lostpropertyInput').value;
+
+    if (!lostPropertyName) {
+        alert('落とし物の名前を入力してください。');
+        return;
+    }
+
+    try {
+        const response = await fetchWithAuth('https://staff-api.project-moca.com/add_lostproperty', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ lostproperty_name: lostPropertyName })
+        });
+
+        if (response.ok) {
+            alert('落とし物が正常に登録されました。');
+            fetchLostProperties(); // 登録後にリストを更新
+        } else {
+            alert('登録に失敗しました。');
+        }
+    } catch (error) {
+        console.error('エラーが発生しました:', error);
+        alert('エラーが発生しました。');
+    }
 }
 
-function getAuthCredentials() {
-    const username = localStorage.getItem('username');
-    const password = localStorage.getItem('password');
-    return { username, password };
+async function fetchLostProperties() {
+    try {
+        const response = await fetchWithAuth('https://staff-api.project-moca.com/get_lostproperty');
+
+        if (response.ok) {
+            const properties = await response.json();
+            const propertySelect = document.getElementById('propertySelect');
+            propertySelect.innerHTML = '';
+
+            properties.forEach(property => {
+                const option = document.createElement('option');
+                option.value = property.id;
+                option.textContent = property.lostPropertyName;
+                propertySelect.appendChild(option);
+            });
+        } else {
+            alert('落とし物の取得に失敗しました。');
+        }
+    } catch (error) {
+        console.error('エラーが発生しました:', error);
+        alert('エラーが発生しました。');
+    }
+}
+
+async function updateStatus() {
+    const propertyId = document.getElementById('propertySelect').value;
+    const status = document.getElementById('statusInput').checked;
+
+    if (!propertyId) {
+        alert('更新する落とし物を選択してください。');
+        return;
+    }
+
+    try {
+        const response = await fetchWithAuth(`https://staff-api.project-moca.com/update_lostproperty/${propertyId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ status })
+        });
+
+        if (response.ok) {
+            alert('落とし物のステータスが更新されました。');
+            fetchLostProperties(); // 更新後にリストを更新
+        } else {
+            alert('ステータスの更新に失敗しました。');
+        }
+    } catch (error) {
+        console.error('エラーが発生しました:', error);
+        alert('エラーが発生しました。');
+    }
 }

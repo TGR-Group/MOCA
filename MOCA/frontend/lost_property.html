@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -5,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>落とし物管理</title>
     <link rel="stylesheet" href="css/style.css">
-    <script src="js/lost_property.js" defer></script>
 </head>
 <body>
     <header>
@@ -52,20 +52,6 @@
     <footer>
         <p>&copy; 2024 supported by TGRGroup</p>
     </footer>
-    <script>
-        // ログインフォームを追加し、ユーザーが認証情報を設定できるようにする
-        function login() {
-            const username = prompt("ユーザー名を入力してください:");
-            const password = prompt("パスワードを入力してください:");
-            setAuthCredentials(username, password);
-            alert("認証情報が設定されました");
-        }
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            if (!localStorage.getItem('username') || !localStorage.getItem('password')) {
-                login();
-            }
-        });
-    </script>
+    <script src="js/lost_property.js" defer></script>
 </body>
 </html>
