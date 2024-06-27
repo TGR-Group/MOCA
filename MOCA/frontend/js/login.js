@@ -1,10 +1,9 @@
-import axios from 'axios'
-
 const DB_URL = 'http://api.project-moca.com';
 axios.defaults.withCredentials = true;
 axios.defaults.baseURL = DB_URL;
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 axios.defaults.withCredentials = true;
+axios.defaults.crossDomain = true;
 
 async function staffAuth(name,pass) {
     await axios.post('/staff/program', {
