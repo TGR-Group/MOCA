@@ -1,81 +1,58 @@
-document.addEventListener('DOMContentLoaded', () => {
-    if (!localStorage.getItem('authToken')) {
-        window.location.href = 'login.html';
-        return;
+const DB_URL = 'http://api.project-moca.com';
+axios.defaults.baseURL = DB_URL;
+axios.defaults.headers.common['Content-Type'] = 'application/json';
+axios.defaults.withCredentials = true;
+axios.defaults.crossDomain = true;
+
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const response = await axios.get('/get_lostproperty');
+        const properties = response.data;
+        const tableBody = document.getElementById('lostPropertyTable').getElementsByTagName('tbody')[0];
+
+        properties.forEach(property => {
+            const row = document.createElement('tr');
+            row.insertCell(0).textContent = property.lostproperty_name;
+            row.insertCell(1).textContent = property.status ? '受け取り済み' : '未受け取り';
+            tableBody.appendChild(row);
+        });
+    } catch (error) {
+        alert('落とし物の取得に失敗しました');
     }
-  
-    fetchLostProperties();
-  
-    document.getElementById('addLostPropertyButton').addEventListener('click', addLostProperty);
-    document.getElementById('updateStatusButton').addEventListener('click', updateStatus);
 });
-  
-async function fetchWithAuth(url, options = {}) {
-    const authToken = localStorage.getItem('authToken');
-    if (!authToken) {
-        throw new Error('No auth token found');
-    }
-  
-    options.headers = {
-        ...options.headers,
-        'Authorization': `Basic ${authToken}`,
-        'Content-Type': 'application/json',
-    };
-  
-    const response = await fetch(url, options);
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    return response.json();
-}
-  
+
 async function addLostProperty() {
-    const lostPropertyName = document.getElementById('lostpropertyInput').value;
-    if (!lostPropertyName) {
+    const lostpropertyName = document.getElementById('lostpropertyInput').value;
+    if (!lostpropertyName) {
         alert('落とし物の名前を入力してください');
         return;
     }
-  
+
     try {
-        await fetchWithAuth('https://staff-api.project-moca.com/add_lostproperty', {
-            method: 'POST',
-            body: JSON.stringify({ lostproperty_name: lostPropertyName }),
+        const response = await axios.post('/add_lostproperty', {
+            lostproperty_name: lostpropertyName
         });
-        alert('落とし物を登録しました');
-        fetchLostProperties(); // 更新後に再度取得
+        alert(response.data.message);
+        location.reload();
     } catch (error) {
-        console.error('エラーが発生しました:', error);
+        alert('落とし物の登録に失敗しました');
     }
 }
-  
-async function fetchLostProperties() {
-    try {
-        const properties = await fetchWithAuth('https://staff-api.project-moca.com/get_lostproperty');
-        const propertySelect = document.getElementById('propertySelect');
-        propertySelect.innerHTML = ''; // 既存のオプションをクリア
-  
-        properties.forEach(property => {
-            const option = document.createElement('option');
-            option.value = property.id;
-            option.textContent = property.lostPropertyName;
-            propertySelect.appendChild(option);
-        });
-    } catch (error) {
-        console.error('エラーが発生しました:', error);
-    }
-}
-  
+
 async function updateStatus() {
-    const propertyId = document.getElementById('propertySelect').value;
-    const status = document.getElementById('statusInput').checked;
-  
+    const propertySelect = document.getElementById('propertySelect');
+    const statusInput = document.getElementById('statusInput');
+
+    const propertyId = propertySelect.value;
+    const status = statusInput.checked;
+
     try {
-        await fetchWithAuth(`https://staff-api.project-moca.com/update_lostproperty/${propertyId}`, {
-            method: 'POST',
-            body: JSON.stringify({ status }),
+        const response = await axios.post(`/update_lostproperty/${propertyId}`, {
+            status: status
         });
-        alert('ステータスを更新しました');
+        alert(response.data.message);
+        location.reload();
     } catch (error) {
-        console.error('エラーが発生しました:', error);
+        alert('ステータスの更新に失敗しました');
     }
 }
