@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>スタッフ管理ページ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            width: 120px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        .welcome-message {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .card-description {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .card-link {
+            display: inline-block;
+            padding: 12px 20px;
+            background-color: #6e8efb;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .card-link:hover {
+            background-color: #5d7df9;
+        }
+
+        .logout-form {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .logout-button {
+            padding: 12px 20px;
+            background-color: #ff4757;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .logout-button:hover {
+            background-color: #ff6b81;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img src="img/logo.png" alt="ロゴ" class="logo">
+            <div class="welcome-message">
+
+            </div>
+        </header>
+
+        <div class="grid">
+            <div class="card">
+                <div class="card-content">
+                    <h2 class="card-title">落とし物/迷子情報登録</h2>
+                    <p class="card-description">落とし物や迷子の情報を登録・管理するページです。</p>
+                    <a href="lost_property.html" class="card-link">登録する</a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <h2 class="card-title">在庫状況入力</h2>
+                    <p class="card-description">食販系の在庫状況を登録・管理するページです。</p>
+                    <a href="stock_status.html" class="card-link">登録する</a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <h2 class="card-title">スタッフ側待ち情報</h2>
+                    <p class="card-description">ユーザーの待ち状況を登録・管理するページです。</p>
+                    <a href="UserInfo.html" class="card-link">登録する</a>
+                </div>
+            </div>
+        </div>
+
+
+        <input type="submit" name="logout" value="ログアウト" class="logout-button">
+
+    </div>
+</body>
+</html>
