@@ -73,9 +73,13 @@ async function loadUserStatus(programId) {
     try {
         const waitingResponse = await fetchWithAuth(`/staff/wait/${programId}`);
         const calledResponse = await fetchWithAuth(`/staff/called/${programId}`);
+        const inResponse = await fetchWithAuth(`/staff/in/${programId}`);
+        const exitedResponse = await fetchWithAuth(`/staff/exited/${programId}`);
 
         const waitingUsers = waitingResponse.data;
         const calledUsers = calledResponse.data;
+        const inedUsers = inResponse.data;
+        const exitedUsers = exitedResponse.data;
 
         const waitingUsersSection = document.getElementById('waitingUsers').getElementsByTagName('tbody')[0];
         const inUsersSection = document.getElementById('inUsers').getElementsByTagName('tbody')[0];
@@ -85,7 +89,7 @@ async function loadUserStatus(programId) {
         inUsersSection.innerHTML = '';
         exitedUsersSection.innerHTML = '';
 
-        const allUsers = [...waitingUsers, ...calledUsers];
+        const allUsers = [...waitingUsers, ...calledUsers, ...inedUsers, ...exitedUsers];
         allUsers.sort((a, b) => new Date(a.waitedAt) - new Date(b.waitedAt)); // 並び順を作成日時でソート
 
         allUsers.forEach((user, index) => {
