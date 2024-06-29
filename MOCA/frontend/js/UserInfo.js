@@ -33,7 +33,7 @@ async function ensureAuth() {
     }
 
     try {
-        const response = await axios.post('/staff/auth', {
+        const response = await axios.get('/staff/auth', {
             auth: {
                 username: staffId,
                 password: staffPass
