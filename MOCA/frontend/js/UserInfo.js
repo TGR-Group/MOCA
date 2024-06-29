@@ -5,38 +5,67 @@ axios.defaults.withCredentials = true;
 axios.defaults.crossDomain = true;
 
 document.addEventListener('DOMContentLoaded', async () => {
-    if (!isLoggedIn()) {
-        window.location.href = 'login.html'; // ログインページへのリダイレクト
+    await ensureAuth();
+    await loadProgram();
+
+    const manualEntryForm = document.getElementById('manualEntryForm');
+    if (manualEntryForm) {
+        manualEntryForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const userIdInput = document.getElementById('userIdInput').value;
+            try {
+                const programId = localStorage.getItem('programId');
+                await updateUserStatus(programId, userIdInput, 'in');
+            } catch (error) {
+                alert('エラー: ' + error.message);
+            }
+        });
+    }
+});
+
+async function ensureAuth() {
+    const staffId = localStorage.getItem('staffId');
+    const staffPass = localStorage.getItem('staffPass');
+    if (!staffId || !staffPass) {
+        alert('ログインが必要です');
+        window.location.href = 'login.html';
         return;
     }
+    
+    try {
+        const response = await axios.post('/staff/auth', {
+            auth: {
+                username: staffId,
+                password: staffPass
+            },
+        });
+        if (response.status !== 200) {
+            throw new Error('Unauthorized');
+        }
+    } catch (error) {
+        alert('認証に失敗しました。再度ログインしてください。');
+        localStorage.removeItem('staffId');
+        localStorage.removeItem('staffPass');
+        window.location.href = 'login.html';
+    }
+}
 
+async function loadProgram() {
     try {
         const response = await fetchWithAuth('/staff/program');
         const result = response.data;
 
         if (result.success) {
             const program = result.programs[0]; // 最初のプログラムを使用
+            localStorage.setItem('programId', program.id);
             loadUserStatus(program.id);
-
-            // ID入力フォームの送信イベントを処理
-            const manualEntryForm = document.getElementById('manualEntryForm');
-            manualEntryForm.addEventListener('submit', async (event) => {
-                event.preventDefault();
-                const userIdInput = document.getElementById('userIdInput').value;
-
-                try {
-                    await updateUserStatus(program.id, userIdInput, 'in');
-                } catch (error) {
-                    alert('エラー: ' + error.message);
-                }
-            });
         } else {
             console.error('プログラムの取得に失敗しました:', result.error);
         }
     } catch (error) {
         console.error('出し物情報の取得に失敗しました:', error);
     }
-});
+}
 
 async function loadUserStatus(programId) {
     try {
@@ -118,10 +147,6 @@ async function updateUserStatus(programId, userId, newStatus) {
     } catch (error) {
         alert('エラー: ' + error.message);
     }
-}
-
-function isLoggedIn() {
-    return localStorage.getItem('authToken') !== null;
 }
 
 async function fetchWithAuth(url, options = {}) {
