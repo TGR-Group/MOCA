@@ -5,6 +5,11 @@ axios.defaults.withCredentials = true;
 axios.defaults.crossDomain = true;
 
 document.addEventListener('DOMContentLoaded', async () => {
+    if (!isLoggedIn()) {
+        window.location.href = 'login.html'; // ログインページへのリダイレクト
+        return;
+    }
+
     try {
         const response = await axios.get('/get_lostproperty');
         const properties = response.data;
@@ -55,4 +60,8 @@ async function updateStatus() {
     } catch (error) {
         alert('ステータスの更新に失敗しました');
     }
+}
+
+function isLoggedIn() {
+    return localStorage.getItem('authToken') !== null;
 }
