@@ -22,13 +22,46 @@
     </header>
     <main>
         <section>
-            <h2>店舗選択</h2>
-            <select id="storeSelect">
-            </select>
+            <h2>スマホを持っていない人のためのID入力</h2>
+            <form id="manualEntryForm">
+                <label for="userIdInput">ユーザーID:</label>
+                <input type="text" id="userIdInput" name="userId" required>
+                <button type="submit">入場中に設定</button>
+            </form>
         </section>
         <section>
-            <h2>ユーザーステータス一覧</h2>
-            <table id="userStatusTable">
+            <h2>待機中のユーザー</h2>
+            <table id="waitingUsers">
+                <thead>
+                    <tr>
+                        <th>順番</th>
+                        <th>ユーザーID</th>
+                        <th>ステータス</th>
+                        <th>アクション</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </section>
+        <section>
+            <h2>入場中のユーザー</h2>
+            <table id="inUsers">
+                <thead>
+                    <tr>
+                        <th>順番</th>
+                        <th>ユーザーID</th>
+                        <th>ステータス</th>
+                        <th>アクション</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </section>
+        <section>
+            <h2>退場したユーザー</h2>
+            <table id="exitedUsers">
                 <thead>
                     <tr>
                         <th>順番</th>
