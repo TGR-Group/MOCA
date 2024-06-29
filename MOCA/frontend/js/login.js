@@ -1,4 +1,4 @@
-const DB_URL = 'http://api.project-moca.com';
+const DB_URL = 'https://api.project-moca.com';
 axios.defaults.baseURL = DB_URL;
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 axios.defaults.withCredentials = true;
