@@ -54,7 +54,7 @@ async function ensureAuth() {
 
 async function loadProgram() {
     try {
-        const response = await fetchWithAuth('/staff/program');
+        const response = await axios.get('/staff/program');
         const result = response.data;
 
         if (result.success) {

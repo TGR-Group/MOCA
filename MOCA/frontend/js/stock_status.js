@@ -6,7 +6,7 @@ axios.defaults.crossDomain = true;
 
 document.addEventListener('DOMContentLoaded', async () => {
     await ensureAuth();
-    await loadProgram();
+    await loadStores();
 
     let loginButton = document.getElementById('loginButton');
     if (loginButton) {
@@ -45,26 +45,12 @@ async function ensureAuth() {
     }
 }
 
-async function loadProgram() {
-    try {
-        const response = await fetchWithAuth('/staff/program');
-        const result = response.data;
-
-        if (result.success) {
-            const program = result.programs[0]; // 最初のプログラムを使用
-            localStorage.setItem('programId', program.id);
-            loadUserStatus(program.id);
-        } else {
-            console.error('プログラムの取得に失敗しました:', result.error);
-        }
-    } catch (error) {
-        console.error('出し物情報の取得に失敗しました:', error);
-    }
-}
 async function loadStores() {
     try {
         const response = await axios.get('/staff/program');
         const stores = response.data;
+        localStorage.setItem('programId',stores[0].id)
+        /**
         const storeSelect = document.getElementById('storeSelect');
         stores.forEach(store => {
             const option = document.createElement('option');
@@ -72,6 +58,7 @@ async function loadStores() {
             option.textContent = store.name;
             storeSelect.appendChild(option);
         });
+        */
     } catch (error) {
         console.error('店舗情報の取得に失敗しました', error);
     }
