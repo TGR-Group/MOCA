@@ -1,4 +1,4 @@
-const DB_URL = 'http://api.project-moca.com';
+const DB_URL = 'https://api.project-moca.com';
 axios.defaults.baseURL = DB_URL;
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 axios.defaults.withCredentials = true;
@@ -32,22 +32,24 @@ async function ensureAuth() {
         return;
     }
 
-    try {
-        const response = await axios.get('/staff/auth', {
+        await axios.get('/staff/auth', {
             auth: {
                 username: staffId,
                 password: staffPass
             },
-        });
-        if (response.status !== 200) {
-            throw new Error('Unauthorized');
-        }
-    } catch (error) {
-        alert('認証に失敗しました。再度ログインしてください。');
-        localStorage.removeItem('staffId');
-        localStorage.removeItem('staffPass');
-        window.location.href = 'login.html';
-    }
+        }).then((response) => {
+            if (response.status !== 200) {
+                throw new Error('Unauthorized');
+            }else{
+                return true
+            }
+            })
+            .catch ((error) => {
+                alert('認証に失敗しました。再度ログインしてください。');
+                localStorage.removeItem('staffId');
+                localStorage.removeItem('staffPass');
+                window.location.href = 'login.html';
+            });
 }
 
 async function loadProgram() {
