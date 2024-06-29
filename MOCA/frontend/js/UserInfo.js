@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const userIdInput = document.getElementById('userIdInput').value;
             try {
                 const programId = localStorage.getItem('programId');
-                await updateUserStatus(programId, userIdInput, 'in');
+                await updateUserStatus(programId, userIdInput, 'enter');
             } catch (error) {
                 alert('エラー: ' + error.message);
             }
@@ -31,7 +31,7 @@ async function ensureAuth() {
         window.location.href = 'login.html';
         return;
     }
-    
+
     try {
         const response = await axios.post('/staff/auth', {
             auth: {
@@ -69,8 +69,11 @@ async function loadProgram() {
 
 async function loadUserStatus(programId) {
     try {
-        const response = await fetchWithAuth(`/programs/${programId}/users`);
-        const users = response.data;
+        const waitingResponse = await fetchWithAuth(`/staff/wait/${programId}`);
+        const calledResponse = await fetchWithAuth(`/staff/called/${programId}`);
+
+        const waitingUsers = waitingResponse.data;
+        const calledUsers = calledResponse.data;
 
         const waitingUsersSection = document.getElementById('waitingUsers').getElementsByTagName('tbody')[0];
         const inUsersSection = document.getElementById('inUsers').getElementsByTagName('tbody')[0];
@@ -80,9 +83,10 @@ async function loadUserStatus(programId) {
         inUsersSection.innerHTML = '';
         exitedUsersSection.innerHTML = '';
 
-        users.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)); // 並び順を作成日時でソート
+        const allUsers = [...waitingUsers, ...calledUsers];
+        allUsers.sort((a, b) => new Date(a.waitedAt) - new Date(b.waitedAt)); // 並び順を作成日時でソート
 
-        users.forEach((user, index) => {
+        allUsers.forEach((user, index) => {
             addUserToSection(user, programId, index + 1);
         });
     } catch (error) {
@@ -93,6 +97,7 @@ async function loadUserStatus(programId) {
 function addUserToSection(user, programId, order) {
     const sectionMap = {
         'wait': 'waitingUsers',
+        'called': 'waitingUsers', // 呼び出し済みのユーザーも待機中に表示
         'in': 'inUsers',
         'exited': 'exitedUsers'
     };
@@ -101,50 +106,72 @@ function addUserToSection(user, programId, order) {
     const section = document.getElementById(sectionId).getElementsByTagName('tbody')[0];
     const row = document.createElement('tr');
     row.insertCell(0).textContent = order;
-    row.insertCell(1).textContent = user.id;
+    row.insertCell(1).textContent = user.userId;
     row.insertCell(2).textContent = user.status || '不明';
 
     const actionCell = row.insertCell(3);
 
-    if (user.status === 'wait') {
+    if (user.status === 'wait' || user.status === 'called') {
+        const callButton = document.createElement('button');
+        callButton.textContent = '呼ぶ';
+        callButton.onclick = () => updateUserStatus(programId, user.userId, 'call');
+        actionCell.appendChild(callButton);
+
         const enterButton = document.createElement('button');
         enterButton.textContent = '入場中に設定';
-        enterButton.onclick = () => updateUserStatus(programId, user.id, 'in');
+        enterButton.onclick = () => updateUserStatus(programId, user.userId, 'enter');
         actionCell.appendChild(enterButton);
-
-        const exitButton = document.createElement('button');
-        exitButton.textContent = '退場済に設定';
-        exitButton.onclick = () => updateUserStatus(programId, user.id, 'exited');
-        actionCell.appendChild(exitButton);
     } else if (user.status === 'in') {
         const exitButton = document.createElement('button');
         exitButton.textContent = '退場済に設定';
-        exitButton.onclick = () => updateUserStatus(programId, user.id, 'exited');
+        exitButton.onclick = () => updateUserStatus(programId, user.userId, 'quit');
         actionCell.appendChild(exitButton);
     }
 
     section.appendChild(row);
 }
 
-async function updateUserStatus(programId, userId, newStatus) {
+async function updateUserStatus(programId, userId, action) {
     try {
-        const staffId = localStorage.getItem('staffId');
-        const updateResponse = await fetchWithAuth(`/programs/${programId}/users/${userId}/status`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            data: { status: newStatus, staffId }
-        });
+        let url = '';
+        let data = { userId };
 
-        if (updateResponse.status !== 200) {
-            const result = updateResponse.data;
-            throw new Error('ステータスの更新に失敗しました: ' + result.error);
+        if (action === 'call') {
+            url = `/staff/call/${programId}`;
+        } else if (action === 'enter') {
+            url = `/staff/enter/${programId}`;
+        } else if (action === 'quit') {
+            url = `/staff/quit/${programId}`;
         }
 
-        alert('ステータスが更新されました');
+        const response = await fetchWithAuth(url, {
+            method: 'POST',
+            data
+        });
+
+        if (response.status !== 200) {
+            throw new Error(`${action}の処理に失敗しました`);
+        }
+
+        alert(`${action}の処理が成功しました`);
         loadUserStatus(programId);
     } catch (error) {
         alert('エラー: ' + error.message);
     }
+}
+
+async function fetchWithAuth(url, options = {}) {
+    const staffId = localStorage.getItem('staffId');
+    const staffPass = localStorage.getItem('staffPass');
+    if (!staffId || !staffPass) {
+        throw new Error('未認証');
+    }
+
+    const authHeader = 'Basic ' + btoa(`${staffId}:${staffPass}`);
+    const headers = {
+        ...options.headers,
+        'Authorization': authHeader
+    };
+
+    return axios({ url, ...options, headers });
 }
