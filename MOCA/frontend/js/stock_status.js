@@ -47,7 +47,15 @@ async function ensureAuth() {
 
 async function loadStores() {
     try {
-        const response = await axios.get('/staff/program');
+        const staffId = localStorage.getItem('staffId');
+        const staffPass = localStorage.getItem('staffPass');
+        const response = await axios.get('/staff/program',{
+            auth: {
+                username: staffId,
+                password: staffPass
+            }
+        }
+        );
         const stores = response.data;
         localStorage.setItem('programId',stores[0].id)
         /**
