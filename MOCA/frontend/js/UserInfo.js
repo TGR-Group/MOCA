@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (manualEntryFormForWait) {
         manualEntryFormForWait.addEventListener('submit', async (event) => {
             event.preventDefault();
-            const userIdInputForWait = document.getElementById('userIdInputForWait').value;
+            const userIdInputForWait = Number(document.getElementById('userIdInputForWait').value);
             try {
                 const programId = localStorage.getItem('programId');
                 await updateUserStatus(programId, userIdInputForWait, 'wait');
@@ -22,19 +22,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    const manualEntryFormForEnter = document.getElementById('manualEntryFormForEnter');
-    if (manualEntryFormForEnter) {
-        manualEntryFormForEnter.addEventListener('submit', async (event) => {
-            event.preventDefault();
-            const userIdInputForEnter = document.getElementById('userIdInputForEnter').value;
-            try {
-                const programId = localStorage.getItem('programId');
-                await updateUserStatus(programId, userIdInputForEnter, 'enter');
-            } catch (error) {
-                alert('エラー: ' + error.message);
-            }
-        });
-    }
 });
 
 async function ensureAuth() {
@@ -154,7 +141,7 @@ function addUserToSection(user, programId, order) {
 async function updateUserStatus(programId, userId, action) {
     try {
         let url = '';
-        let data = { userId };
+        let data = { userId, programId };
 
         if (action === 'call') {
             url = `/staff/call/${programId}`;
@@ -195,5 +182,5 @@ async function fetchWithAuth(url, options = {}) {
         'Authorization': authHeader
     };
 
-    return axios({ url, ...options, headers });
+    return await axios({ url, ...options, headers });
 }
