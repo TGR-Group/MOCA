@@ -5,7 +5,7 @@ axios.defaults.withCredentials = true;
 axios.defaults.crossDomain = true;
 
 async function staffAuth(name,pass) {
-    await axios.get('/staff/auth',{}, {
+    await axios.get('/staff/auth',{
         auth: {
             username: name,
             password: pass
