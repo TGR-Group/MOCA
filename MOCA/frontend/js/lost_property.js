@@ -5,10 +5,7 @@ axios.defaults.withCredentials = true;
 axios.defaults.crossDomain = true;
 
 document.addEventListener('DOMContentLoaded', async () => {
-    if (!isLoggedIn()) {
-        window.location.href = 'login.html'; // ログインページへのリダイレクト
-        return;
-    }
+    await ensureAuth();
 
     try {
         const response = await axios.get('/get_lostproperty');
@@ -25,6 +22,33 @@ document.addEventListener('DOMContentLoaded', async () => {
         alert('落とし物の取得に失敗しました');
     }
 });
+
+async function ensureAuth() {
+    const staffId = localStorage.getItem('staffId');
+    const staffPass = localStorage.getItem('staffPass');
+    if (!staffId || !staffPass) {
+        alert('ログインが必要です');
+        window.location.href = 'login.html';
+        return;
+    }
+    
+    try {
+        const response = await axios.post('/staff/auth', {
+            auth: {
+                username: staffId,
+                password: staffPass
+            },
+        });
+        if (response.status !== 200) {
+            throw new Error('Unauthorized');
+        }
+    } catch (error) {
+        alert('認証に失敗しました。再度ログインしてください。');
+        localStorage.removeItem('staffId');
+        localStorage.removeItem('staffPass');
+        window.location.href = 'login.html';
+    }
+}
 
 async function addLostProperty() {
     const lostpropertyName = document.getElementById('lostpropertyInput').value;

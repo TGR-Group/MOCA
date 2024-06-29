@@ -148,17 +148,3 @@ async function updateUserStatus(programId, userId, newStatus) {
         alert('エラー: ' + error.message);
     }
 }
-
-async function fetchWithAuth(url, options = {}) {
-    const token = localStorage.getItem('authToken');
-    if (!token) {
-        throw new Error('未認証');
-    }
-
-    const headers = {
-        ...options.headers,
-        'Authorization': `Bearer ${token}`
-    };
-
-    return axios({ url, ...options, headers });
-}

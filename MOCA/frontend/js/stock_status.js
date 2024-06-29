@@ -107,21 +107,3 @@ async function submitStatus() {
         alert('在庫情報の更新に失敗しました');
     }
 }
-
-async function staffAuth(name, pass) {
-    try {
-        const response = await axios.post('/staff/auth', {
-            auth: {
-                username: name,
-                password: pass
-            },
-        });
-        if (response.status === 200) {
-            localStorage.setItem('staffId', name);
-            localStorage.setItem('staffPass', pass);
-            window.location.href = 'index.html';
-        }
-    } catch (error) {
-        alert('ログインに失敗しました');
-    }
-}
