@@ -91,11 +91,11 @@ async function submitStatus() {
 
     let quantity;
     if (status === '◎') {
-        quantity = 100;
+        quantity = "普通";
     } else if (status === '△') {
-        quantity = 50;
+        quantity = "混雑";
     } else if (status === '✕') {
-        quantity = 0;
+        quantity = "満員";
     }
 
     try {
