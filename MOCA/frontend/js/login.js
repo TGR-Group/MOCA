@@ -14,6 +14,7 @@ async function staffAuth(name,pass) {
         if (res.status == 200) {
             localStorage.setItem('staffId', name);
             localStorage.setItem('staffPass', pass);
+            localStorage.setItem('programId',res.data.programIds[0].id)
             window.location.href = 'index.html';
         }
     }).catch((err) => {

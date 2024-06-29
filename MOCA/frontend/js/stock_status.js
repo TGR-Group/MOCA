@@ -1,4 +1,4 @@
-const DB_URL = 'http://api.project-moca.com';
+const DB_URL = 'https://api.project-moca.com';
 axios.defaults.baseURL = DB_URL;
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 axios.defaults.withCredentials = true;
@@ -6,7 +6,7 @@ axios.defaults.crossDomain = true;
 
 document.addEventListener('DOMContentLoaded', async () => {
     await ensureAuth();
-    await loadStores();
+    await loadProgram();
 
     let loginButton = document.getElementById('loginButton');
     if (loginButton) {
@@ -26,9 +26,9 @@ async function ensureAuth() {
         window.location.href = 'login.html';
         return;
     }
-    
+
     try {
-        const response = await axios.post('/staff/auth', {
+        const response = await axios.get('/staff/auth', {
             auth: {
                 username: staffId,
                 password: staffPass
@@ -45,9 +45,25 @@ async function ensureAuth() {
     }
 }
 
+async function loadProgram() {
+    try {
+        const response = await fetchWithAuth('/staff/program');
+        const result = response.data;
+
+        if (result.success) {
+            const program = result.programs[0]; // 最初のプログラムを使用
+            localStorage.setItem('programId', program.id);
+            loadUserStatus(program.id);
+        } else {
+            console.error('プログラムの取得に失敗しました:', result.error);
+        }
+    } catch (error) {
+        console.error('出し物情報の取得に失敗しました:', error);
+    }
+}
 async function loadStores() {
     try {
-        const response = await axios.get('/staff/stores');
+        const response = await axios.get('/staff/program');
         const stores = response.data;
         const storeSelect = document.getElementById('storeSelect');
         stores.forEach(store => {
@@ -83,27 +99,45 @@ async function submitStatus() {
     const storeSelect = document.getElementById('storeSelect');
     const itemName = storeSelect.value;
     const status = document.querySelector('input[name="status"]:checked').value;
-    
+    const programId = localStorage.getItem('programId');
+    const staffId = localStorage.getItem('staffId');
+    const staffPass = localStorage.getItem('staffPass');
+
     if (!itemName || !status) {
         alert('すべてのフィールドを入力してください');
         return;
     }
 
-    let quantity;
-    if (status === '◎') {
+    let quantity = '不明';
+    if (status === '普通') {
         quantity = "普通";
-    } else if (status === '△') {
+    } else if (status === '混雑') {
         quantity = "混雑";
-    } else if (status === '✕') {
+    } else if (status === '満員') {
         quantity = "満員";
     }
 
-    try {
-        const response = await axios.post(`/staff/update_stock/${itemName}`, {
-            quantity
-        });
-        alert(response.data.message);
-    } catch (error) {
-        alert('在庫情報の更新に失敗しました');
-    }
+    await axios.get('/get_stock/'+programId)
+        .then(async (data) => {
+            await axios.post('/staff/update_stock/'+programId,{
+                quantity
+            },{
+                auth:{
+                    username: staffId,
+                    password: staffPass
+                }
+            }
+            )
+        })
+        .catch(async (err) => {
+            await axios.post('/staff/add_stock'+programId,{
+                quantity
+            },{
+                auth: {
+                    username: staffId,
+                    password: staffPass
+                }
+            }
+            )
+        })
 }
