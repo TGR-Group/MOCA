@@ -8,14 +8,28 @@ document.addEventListener('DOMContentLoaded', async () => {
     await ensureAuth();
     await loadProgram();
 
-    const manualEntryForm = document.getElementById('manualEntryForm');
-    if (manualEntryForm) {
-        manualEntryForm.addEventListener('submit', async (event) => {
+    const manualEntryFormForWait = document.getElementById('manualEntryFormForWait');
+    if (manualEntryFormForWait) {
+        manualEntryFormForWait.addEventListener('submit', async (event) => {
             event.preventDefault();
-            const userIdInput = document.getElementById('userIdInput').value;
+            const userIdInputForWait = document.getElementById('userIdInputForWait').value;
             try {
                 const programId = localStorage.getItem('programId');
-                await updateUserStatus(programId, userIdInput, 'enter');
+                await updateUserStatus(programId, userIdInputForWait, 'wait');
+            } catch (error) {
+                alert('エラー: ' + error.message);
+            }
+        });
+    }
+
+    const manualEntryFormForEnter = document.getElementById('manualEntryFormForEnter');
+    if (manualEntryFormForEnter) {
+        manualEntryFormForEnter.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const userIdInputForEnter = document.getElementById('userIdInputForEnter').value;
+            try {
+                const programId = localStorage.getItem('programId');
+                await updateUserStatus(programId, userIdInputForEnter, 'enter');
             } catch (error) {
                 alert('エラー: ' + error.message);
             }
@@ -148,6 +162,8 @@ async function updateUserStatus(programId, userId, action) {
             url = `/staff/enter/${programId}`;
         } else if (action === 'quit') {
             url = `/staff/quit/${programId}`;
+        } else if (action === 'wait') {
+            url = '/guest/wait';
         }
 
         const response = await fetchWithAuth(url, {

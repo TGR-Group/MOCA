@@ -22,11 +22,17 @@
     <main>
         <section>
             <h2>スマホを持っていない人のためのID入力</h2>
+            <form id="manualEntryFormForWait">
+                <label for="userIdInputForWait">ユーザーID:</label>
+                <input type="text" id="userIdInputForWait" name="userId" required>
+                <button type="submit">待機中に設定</button>
+            </form>
             <form id="manualEntryForm">
                 <label for="userIdInput">ユーザーID:</label>
                 <input type="text" id="userIdInput" name="userId" required>
                 <button type="submit">入場中に設定</button>
             </form>
+        </section>
         </section>
         <section>
             <h2>待機中のユーザー</h2>
