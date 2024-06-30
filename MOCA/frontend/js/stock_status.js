@@ -56,7 +56,7 @@ async function loadStores() {
             }
         }
         );
-        const stores = response.data;
+        const stores = response.data.programs;
         localStorage.setItem('programId',stores[0].id)
         /**
         const storeSelect = document.getElementById('storeSelect');
