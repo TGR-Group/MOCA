@@ -98,7 +98,7 @@ async function submitStatus() {
     const staffId = localStorage.getItem('staffId');
     const staffPass = localStorage.getItem('staffPass');
 
-    if (!itemName || !status) {
+    if (!status) {
         alert('すべてのフィールドを入力してください');
         return;
     }
