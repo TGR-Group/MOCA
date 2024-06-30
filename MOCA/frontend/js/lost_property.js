@@ -10,6 +10,32 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
         const response = await axios.get('/get_lostproperty');
         const properties = response.data;
+
+        const polling = () => {
+            setTimeout(async () => {
+                await axios.get('/get_lostproperty')
+                    .then((res) => {
+                        response = res;
+                        properties = res.data;
+                    })
+                polling();
+            },45000)
+        }
+
+        polling()
+
+        const propertySelect = document.getElementById('propertySelect');
+
+        properties.forEach(property => {
+            if (!property.status) {
+                const row = document.createElement('option');
+                row.value = property.id;
+                row.innerHTML = property.lostPropertyName;
+                propertySelect.appendChild(row);
+            }
+        });
+
+        /**
         const tableBody = document.getElementById('lostPropertyTable').getElementsByTagName('tbody')[0];
 
         properties.forEach(property => {
@@ -18,7 +44,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             row.insertCell(1).textContent = property.status ? '受け取り済み' : '未受け取り';
             tableBody.appendChild(row);
         });
+        */
     } catch (error) {
+        console.log(error);
         alert('落とし物の取得に失敗しました');
     }
 });

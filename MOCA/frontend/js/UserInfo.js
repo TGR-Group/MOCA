@@ -8,6 +8,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     await ensureAuth();
     await loadProgram();
 
+    const polling = () => {
+        setTimeout(async () => {
+            await loadProgram();
+        },45000)
+    };
+
+    polling();
+
     const manualEntryFormForWait = document.getElementById('manualEntryFormForWait');
     if (manualEntryFormForWait) {
         manualEntryFormForWait.addEventListener('submit', async (event) => {
