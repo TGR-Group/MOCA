@@ -157,7 +157,13 @@
         </div>
 
 
-        <input type="submit" name="logout" value="ログアウト" class="logout-button">
+        <input type="button" name="logout" value="ログアウト" class="logout-button" onclick="logout()">
+        <script lang="javascript">
+            const logout = () => {
+                localStorage.removeItem('staffId');
+                localStorage.removeItem('staffPass');
+            }
+        </script>
 
     </div>
 </body>
