@@ -63,7 +63,14 @@ async function ensureAuth() {
 
 async function loadProgram() {
     try {
-        const response = await axios.get('/staff/program');
+        const staffId = localStorage.getItem('staffId');
+        const staffPass = localStorage.getItem('staffPass');
+        const response = await axios.get('/staff/program',{
+            auth: {
+                username: staffId,
+                password: staffPass
+            }
+        });
         const result = response.data;
 
         if (result.success) {
