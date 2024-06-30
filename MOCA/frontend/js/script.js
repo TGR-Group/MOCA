@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     properties.forEach(property => {
         const row = document.createElement('tr');
-        row.insertCell(0).textContent = property.lostproperty_name;
+        row.insertCell(0).textContent = property.lostPropertyName;
         row.insertCell(1).textContent = property.status ? '受け取り済み' : '未受け取り';
         tableBody.appendChild(row);
     });
