@@ -8,8 +8,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     await ensureAuth();
 
     try {
-        const response = await axios.get('/get_lostproperty');
-        const properties = response.data;
+        let response = await axios.get('/get_lostproperty');
+        let properties = response.data;
 
         const polling = () => {
             setTimeout(async () => {
