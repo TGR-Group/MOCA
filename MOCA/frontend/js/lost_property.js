@@ -7,48 +7,41 @@ axios.defaults.crossDomain = true;
 document.addEventListener('DOMContentLoaded', async () => {
     await ensureAuth();
 
-    try {
-        let response = await axios.get('/get_lostproperty');
-        let properties = response.data;
+    let response = await axios.get('/get_lostproperty');
+    let properties = response.data;
 
-        const polling = () => {
-            setTimeout(async () => {
-                await axios.get('/get_lostproperty')
-                    .then((res) => {
-                        response = res;
-                        properties = res.data;
-                    })
-                polling();
-            },45000)
-        }
-
-        polling()
-
-        const propertySelect = document.getElementById('propertySelect');
-
-        properties.forEach(property => {
-            if (!property.status) {
-                const row = document.createElement('option');
-                row.value = property.id;
-                row.innerHTML = property.lostPropertyName;
-                propertySelect.appendChild(row);
-            }
-        });
-
-        /**
-        const tableBody = document.getElementById('lostPropertyTable').getElementsByTagName('tbody')[0];
-
-        properties.forEach(property => {
-            const row = document.createElement('tr');
-            row.insertCell(0).textContent = property.lostproperty_name;
-            row.insertCell(1).textContent = property.status ? '受け取り済み' : '未受け取り';
-            tableBody.appendChild(row);
-        });
-        */
-    } catch (error) {
-        console.log(error);
-        alert('落とし物の取得に失敗しました');
+    const polling = () => {
+        setTimeout(async () => {
+            await axios.get('/get_lostproperty')
+                .then((res) => {
+                    response = res;
+                    properties = res.data;
+                })
+            polling();
+        },45000)
     }
+
+    polling()
+
+    const propertySelect = document.getElementById('propertySelect');
+
+    properties.forEach(property => {
+        if (!property.status) {
+            const row = document.createElement('option');
+            row.value = property.id;
+            row.innerHTML = property.lostPropertyName;
+            propertySelect.appendChild(row);
+        }
+    });
+
+    const tableBody = document.getElementById('lostPropertyTable').getElementsByTagName('tbody')[0];
+
+    properties.forEach(property => {
+        const row = document.createElement('tr');
+        row.insertCell(0).textContent = property.lostPropertyName;
+        row.insertCell(1).textContent = property.status ? '受け取り済み' : '未受け取り';
+        tableBody.appendChild(row);
+    });
 });
 
 async function ensureAuth() {
